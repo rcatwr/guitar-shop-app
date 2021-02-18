@@ -3,7 +3,7 @@ import React from "react";
 const Nav = () => {
   return (
     <div className="container">
-      <div className="tabs is-medium is-centered mb-2">
+      <div className="tabs is-medium mb-2">
         <ul>
           <li className="is-active">
             <a>Current</a>

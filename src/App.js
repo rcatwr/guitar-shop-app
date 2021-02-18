@@ -7,7 +7,8 @@ import Main from './components/Main';
 
 class App extends React.Component {
   state = {
-    modalShow: true,
+    modalShow: false,
+    showSearchOptions: false
   };
 
   render() {
@@ -17,7 +18,7 @@ class App extends React.Component {
       <>
         {toggleModalDisplay}
         <Header />
-        <Main />
+        <Main showSearchOptions={this.state.showSearchOptions}/>
         <Footer />
       </>
     );

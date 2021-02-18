@@ -1,16 +1,16 @@
 import React from 'react'
-import Dropdown from './Dropdown';
+import SearchTool from './SearchTool';
 import Nav from './Nav';
 import OrderCard from './OrderCard'
 
-const Main = () => {
+const Main = (props) => {
 
     return(
         <section className="section">
           <Nav />
           <div className="container is-flex is-justify-content-flex-end">
             {/* <!-- Left side --> */}
-            <Dropdown />
+            <SearchTool showSearchOptions={props.showSearchOptions}/>
           </div>
 
           <OrderCard />
