@@ -1,36 +1,43 @@
-import React from "react";
+import React, {useState} from "react";
 
-class Dropdown extends React.Component {
+const Dropdown = () => {
 
-   state = {
-       dropdownActive: true
-   }
+    const [dropdownActive, setDropDownActive] = useState(false)
+    const [dropdownItemActive, setDropDownItemActive] = useState('orderId')
+    const [searchOrder, setSearchOrder] = useState('asc')
+//    state = {
+//        dropdownActive: true
+//    }
 
-  showDropdown = () => {
-      if (!this.state.dropdownActive){
-        this.setState({
-            dropdownActive:true
-        })
-      } else {
-          this.setState({
-              dropdownActive: false
-          })
-      }
-  };
+//   showDropdown = () => {
+//       if (!this.state.dropdownActive){
+//         this.setState({
+//             dropdownActive:true
+//         })
+//       } else {
+//           this.setState({
+//               dropdownActive: false
+//           })
+//       }
+//   };
+  
+  const clickHandler = () => {
+     if (!dropdownActive) {
+        setDropDownActive(true)
+     } else{
+         setDropDownActive(false)
+     }
+   };
 
-  clickHandler = () => {
-     this.showDropdown();
-  };
+//   render() {
 
-  render() {
-
-    const isActive = this.state.dropdownActive ? "is-active" : null;
+    const isActive = dropdownActive ? "is-active" : null;
+    
 
     return (
-      <div id="dropdown" className={`dropdown mb-2 ${isActive}`}>
+      <div id="dropdown" onClick={clickHandler} className={`dropdown mb-2 ${isActive}`}>
         <div className="dropdown-trigger">
           <button
-            onClick={this.clickHandler}
             className="button"
             aria-haspopup="true"
             aria-controls="dropdown-menu"
@@ -43,28 +50,28 @@ class Dropdown extends React.Component {
         </div>
         <div className="dropdown-menu" id="dropdown-menu" role="menu">
           <div className="dropdown-content">
-            <a href="#" className="dropdown-item">
+            <a href="#" className={`dropdown-item ${dropdownItemActive === 'orderId' ? 'is-active' : null}`}>
               Order Id{" "}
             </a>
             <a className="dropdown-item"> Item </a>
-            <a href="#" className="dropdown-item is-active">
+            <a href="#" className={`dropdown-item ${dropdownItemActive === 'customerName' ? 'is-active' : null}`}>
               {" "}
               Customer{" "}
             </a>
-            <a href="#" className="dropdown-item">
+            <a href="#" className={`dropdown-item ${dropdownItemActive === 'dropOffDate' ? 'is-active' : null}`}>
               {" "}
               Dropoff Date{" "}
             </a>
-            <a href="#" className="dropdown-item">
+            <a href="#" className={`dropdown-item ${dropdownItemActive === 'Service' ? 'is-active' : null}`}>
               {" "}
               Service{" "}
             </a>
             <hr className="dropdown-divider" />
-            <a href="#" className="dropdown-item">
+            <a href="#" className={`dropdown-item ${searchOrder === 'desc' ? 'is-active' : null}`}>
               {" "}
               descending{" "}
             </a>
-            <a href="#" className="dropdown-item">
+            <a href="#" className={`dropdown-item ${searchOrder === 'asc' ? 'is-active' : null}`}>
               {" "}
               ascending{" "}
             </a>
@@ -72,7 +79,7 @@ class Dropdown extends React.Component {
         </div>
       </div>
     );
-  }
+//   }
 }
 
 export default Dropdown;
