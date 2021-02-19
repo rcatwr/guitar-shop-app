@@ -1,114 +1,95 @@
-import React, {useState} from "react";
-import '../css/Dropdown.css'
-
+import React, { useState } from "react";
+import _ from 'lodash'
+import "../css/Dropdown.css";
+import searchByItems from "../data/searchByItems.json";
 
 const Dropdown = () => {
+  const [dropdownActive, setDropDownActive] = useState(false);
+  const [dropdownItemActive, setDropdownItemActive] = useState("orderId");
+  const [searchOrder, setSearchOrder] = useState("desc");
 
-    const [dropdownActive, setDropDownActive] = useState(false)
-    const [dropdownItemActive, setDropdownItemActive] = useState('orderId')
-    const [searchOrder, setSearchOrder] = useState('asc')
-    const [dropdownData, setDropdownData] = useState([]);
-  
   const clickHandler = (e) => {
-     if (!dropdownActive) {
-        setDropDownActive(true)
-     } else{
-        setDropDownActive(false)
-     }
-    // e.stopPropagation()
-   };
-
-//   render() 
-
-    const isActive = dropdownActive ? "is-active" : null;
-    const searchByText = {
-      orderId: 'Order Id',
-      customerName: 'Customer',
-      item: 'Item',
-      dropOffDate: 'Dropoff',
-      service: 'Service',
-      asc: 'up',
-      desc: 'down',
+    if (!dropdownActive) {
+      setDropDownActive(true);
+    } else {
+      setDropDownActive(false);
     }
     
-    const getData = async () => {
-      const result = fetch('./data/searchByItems.json')
-      const data = await result;
-      
-      const formatted = await data.json()
+  };
 
-      setDropdownData(formatted)
-      console.log(dropdownData)
+  const textIndex = _.findIndex(searchByItems, {"id": dropdownItemActive})
+ 
+  const isActive = dropdownActive ? "is-active" : null;
 
-    }
-  
-    getData();
+  const searchOrderText = {
+    asc: "up",
+    desc: "down",
+  };
 
-    return (
-      <div id="dropdown" onClick={clickHandler} className={`dropdown mb-2 ${isActive}`}>
-        <div className="dropdown-trigger">
-          <button
-            className={"button drop-style"}
-            aria-haspopup="true"
-            aria-controls="dropdown-menu"
+  return (
+    <div
+      id="dropdown"
+      onClick={clickHandler}
+      className={`dropdown mb-2 ${isActive}`}
+    >
+      <div className="dropdown-trigger">
+        <button
+          className={"button drop-style"}
+          aria-haspopup="true"
+          aria-controls="dropdown-menu"
+        >
+          <span>{`${searchByItems[textIndex].text}`}</span>
+          <span className="icon is-small">
+            <i
+              className={`fas fa-angle-${searchOrderText[searchOrder]}`}
+              aria-hidden="true"
+            ></i>
+          </span>
+        </button>
+      </div>
+      <div className="dropdown-menu" id="dropdown-menu" role="menu">
+        <div className="dropdown-content">
+
+          {searchByItems.map((item) => {
+            return (
+              <a
+               
+                className={`dropdown-item ${
+                  dropdownItemActive === item.id ? "is-active" : null
+                }`}
+                onClick={() => setDropdownItemActive(item.id)}
+              >
+                {item.text}
+              </a>
+            );
+          })}
+
+          <hr className="dropdown-divider" />
+          <a
+           
+            className={`dropdown-item ${
+              searchOrder === "asc" ? "is-active" : null
+            }`}
+            onClick={() => setSearchOrder("asc")}
           >
-            <span>{`${searchByText[dropdownItemActive]}`}</span>
-            <span className="icon is-small">
-              <i className={`fas fa-angle-${searchByText[searchOrder]}`} aria-hidden="true"></i>
-            </span>
-          </button>
-        </div>
-        <div className="dropdown-menu" id="dropdown-menu" role="menu">
-          <div className="dropdown-content">
-            <a 
-              href="#" 
-              className={`dropdown-item ${dropdownItemActive === 'orderId' ? 'is-active' : null}`}
-              onClick={() =>  setDropdownItemActive('orderId') }
-              >
-              Order Id{" "}
-            </a>
-            <a 
-              href="#" 
-              className={`dropdown-item ${dropdownItemActive === 'item' ? 'is-active' : null}`}
-              onClick={ () => setDropdownItemActive('item') }
-              > Item </a>
-            <a href="#" 
-              className={`dropdown-item ${dropdownItemActive === 'customerName' ? 'is-active' : null}`}
-              onClick={() =>  setDropdownItemActive('customerName') }
-               >
-              {" "}
-              Customer{" "}
-            </a>
-            <a href="#" className={`dropdown-item ${dropdownItemActive === 'dropOffDate' ? 'is-active' : null}`}
-              onClick={() =>  setDropdownItemActive('dropOffDate') }
-              >
-              {" "}
-              Dropoff Date{" "}
-            </a>
-            <a href="#" className={`dropdown-item ${dropdownItemActive === 'service' ? 'is-active' : null}`}
-              onClick={() =>  setDropdownItemActive('service') }
-            >
-              {" "}
-              Service{" "}
-            </a>
-            <hr className="dropdown-divider" />
-            <a href="#" className={`dropdown-item ${searchOrder === 'asc' ? 'is-active' : null}`}
-              onClick={() =>  setSearchOrder('asc') }
-            >
-              {" "}
-              ascending{" "}
-            </a>
-            <a href="#" className={`dropdown-item ${searchOrder === 'desc' ? 'is-active' : null}`}
-              onClick={() =>  setSearchOrder('desc') }
-            >
-              {" "}
-              descending{" "}
-            </a>
-          </div>
+            {" "}
+            ascending{" "}
+          </a>
+          <a
+            
+            className={`dropdown-item ${
+              searchOrder === "desc" ? "is-active" : null
+            }`}
+            onClick={() => setSearchOrder("desc")}
+          >
+            {" "}
+            descending{" "}
+          </a>
         </div>
       </div>
-    );
-//   }
-}
+    </div>
+  );
+  //   }
+};
 
 export default Dropdown;
