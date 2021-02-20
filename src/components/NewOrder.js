@@ -1,28 +1,21 @@
 import React, {useState} from "react";
-import { connect } from "react-redux";
-import { createOrder } from "../actions";
 import serviceList from "../data/serviceList.json";
 import employeeList from "../data/employeeList.json";
 
 
 
-const NewOrder = ({ createOrder }) => {
+const NewOrder = () => {
 
-  const [guitarNameInput, setGuitarNameInput] = useState('');
   
-  const handleNewOrder = (e) => {
-    //console.log(e.target.value)
-    setGuitarNameInput(e.target.value)
-    console.log(guitarNameInput)
-    createOrder({stuff: guitarNameInput})
-  }
+  
+
 
   
 
 
 
   return (
-    <>
+    <form>
       <div class="container">
         <div class="box content">
           <p class="is-size-4">
@@ -39,8 +32,6 @@ const NewOrder = ({ createOrder }) => {
                 class="input"
                 type="text"
                 placeholder="i.e. Fender Telecaster"
-                onChange={e => handleNewOrder(e)}
-                value={guitarNameInput}
               />
               <span class="icon is-small is-left">
                 <i class="fas fa-guitar"></i>
@@ -161,7 +152,7 @@ const NewOrder = ({ createOrder }) => {
 
           <div class="field is-grouped">
             <div class="control">
-              <button class="button is-link">Submit</button>
+              <button type="submit" class="button is-link">Submit</button>
             </div>
             <div class="control">
               <button class="button is-link is-light">Cancel</button>
@@ -169,14 +160,11 @@ const NewOrder = ({ createOrder }) => {
           </div>
         </div>
       </div>
-    </>
+    </form>
   );
 };
 
-// const mapStateToProps = (state, ownProps) => ({
-// // ... computed data from state and optionally ownProps
-// })
 
 
 
-export default connect(null, { createOrder })(NewOrder);
+export default NewOrder;
