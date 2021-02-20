@@ -7,7 +7,7 @@ import Main from './components/Main';
 
 class App extends React.Component {
   state = {
-    modalShow: false,
+    modalShow: true,
     showSearchOptions: false
   };
 

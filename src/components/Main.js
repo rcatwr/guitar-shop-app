@@ -2,6 +2,7 @@ import React from 'react'
 import SearchTool from './SearchTool';
 import Nav from './Nav';
 import OrderCard from './OrderCard'
+import NewOrder from './NewOrder';
 
 const Main = (props) => {
 
@@ -14,6 +15,7 @@ const Main = (props) => {
           </div>
 
           <OrderCard />
+          <NewOrder />
         </section>
     )
 }
