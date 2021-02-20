@@ -27,7 +27,8 @@ class Form extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.props.formSubmitted(this.state) 
+    this.props.formSubmitted(this.state)
+    this.props.closeModal(); 
   }
 
   render() {

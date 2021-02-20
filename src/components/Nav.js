@@ -1,6 +1,9 @@
 import React from "react";
 
-const Nav = () => {
+const Nav = (props) => {
+
+  const handleClick = () => props.openNewOrderModal();
+
   return (
     <div className="container">
       <div className="tabs is-medium mb-2">
@@ -12,7 +15,7 @@ const Nav = () => {
             <a>Completed</a>
           </li>
           <li>
-            <a>New</a>
+            <a onClick={handleClick}>New</a>
           </li>
         </ul>
       </div>
