@@ -1,5 +1,5 @@
 import React from 'react';
-import NewOrder from './NewOrder'
+import Form from './Form'
 
 const Modal = () => {
     
@@ -8,7 +8,7 @@ const Modal = () => {
     <div class={`modal is-active`}>
       <div class="modal-background"></div>
       <div class="modal-content">
-          <NewOrder />
+          <Form />
       </div>
     </div>
 

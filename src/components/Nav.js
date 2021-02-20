@@ -12,7 +12,7 @@ const Nav = () => {
             <a>Completed</a>
           </li>
           <li>
-            <a href="./form.html">New</a>
+            <a>New</a>
           </li>
         </ul>
       </div>
