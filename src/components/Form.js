@@ -60,7 +60,7 @@ class Form extends Component {
       rushOrder,
     } = this.state.newOrder;
 
-    console.log(this.state.newOrder);
+    
     if (this.state.redirect) return <Redirect to="/" />;
 
     return (
