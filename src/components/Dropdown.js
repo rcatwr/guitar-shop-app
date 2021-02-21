@@ -52,7 +52,7 @@ const Dropdown = () => {
 
           {searchByItems.map((item) => {
             return (
-              <a
+              <a key={item.id}
                
                 className={`dropdown-item ${
                   dropdownItemActive === item.id ? "is-active" : null

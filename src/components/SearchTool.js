@@ -4,16 +4,23 @@ import Dropdown from "./Dropdown";
 
 const SearchTool = (props) => {
   return (
-    <div class="field has-addons">
-      <p class="control">
-        <SearchInput />
-      </p>
 
-      <p class="control">
+    <div className="container is-flex is-justify-content-flex-end">
+                
+    <div className="field has-addons">
+      <div className="control">
+        <SearchInput />
+      </div>
+
+      <div className="control">
         <Dropdown
         />
-      </p>
+      </div>
     </div>
+    </div>
+
+
+
   );
 };
 

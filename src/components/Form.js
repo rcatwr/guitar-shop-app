@@ -1,35 +1,49 @@
 import React, { Component } from "react";
 import serviceList from "../data/serviceList.json";
 import employeeList from "../data/employeeList.json";
+import { Redirect } from "react-router-dom";
 
 class Form extends Component {
   state = {
-    orderId: 45,
-    itemDescription: "",
-    customerName: "",
-    phoneNumber: "",
-    service: "",
-    estimate: "",
-    notes: "",
-    rushOrder: false,
-    timeDroppedOff:"",
-    timeEstimatedPickup:"",
-    employeeName:"",
+    newOrder: {
+      orderId: 45,
+      itemDescription: "",
+      customerName: "",
+      phoneNumber: "",
+      service: "",
+      estimate: "",
+      notes: "",
+      rushOrder: false,
+      timeDroppedOff: "",
+      timeEstimatedPickup: "",
+      employeeName: "",
+    },
+    redirect: false,
   };
 
+  // this.setState({
+  //   access: {
+  //     ...this.state.access,
+  //     hospital_id: 1,
+  //   },
+  // });
+
   handleChange = (e) => {
-    if (e.target.type === 'checkbox'){
-      this.setState({rushOrder: e.target.checked })
+    if (e.target.type === "checkbox") {
+      this.setState({ rushOrder: e.target.checked });
     } else {
-      this.setState({ [e.target.id] : e.target.value });
+      this.setState({
+        newOrder: { ...this.state.newOrder, [e.target.id]: e.target.value },
+      });
     }
   };
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.props.formSubmitted(this.state)
-    this.props.closeModal(); 
-  }
+    this.props.formSubmitted(this.state.newOrder);
+
+    this.setState({ redirect: true });
+  };
 
   render() {
     const {
@@ -44,79 +58,84 @@ class Form extends Component {
       timeEstimatedPickup,
       employeeName,
       rushOrder,
-    } = this.state;
+    } = this.state.newOrder;
 
-    console.log(this.state)
+    console.log(this.state.newOrder);
+    if (this.state.redirect) return <Redirect to="/" />;
 
     return (
       <form onSubmit={this.handleSubmit}>
-        <div class="container">
-          <div class="box content">
-            <p class="is-size-4">
-              <span class="fredoka">New Order </span>
-              <span class="tag is-large is-darker is-link is-pulled-right">
+        <div className="container pt-6">
+          <div className="box content">
+            <p className="is-size-4">
+              <span className="fredoka">New Order </span>
+              <span className="tag is-large is-darker is-link is-pulled-right">
                 {orderId}
               </span>
             </p>
 
-            <div class="field">
-              <label class="label">Item Description</label>
-              <div class="control has-icons-left">
+            <div className="field">
+              <label className="label">Item Description</label>
+              <div className="control has-icons-left">
                 <input
                   id="itemDescription"
-                  class="input"
+                  className="input"
                   type="text"
                   placeholder="i.e. Fender Telecaster"
                   value={itemDescription}
                   onChange={this.handleChange}
                 />
-                <span class="icon is-small is-left">
-                  <i class="fas fa-guitar"></i>
+                <span className="icon is-small is-left">
+                  <i className="fas fa-guitar"></i>
                 </span>
               </div>
             </div>
 
-            <div class="field">
-              <label class="label">Customer Name</label>
-              <div class="control has-icons-left">
+            <div className="field">
+              <label className="label">Customer Name</label>
+              <div className="control has-icons-left">
                 <input
                   id="customerName"
-                  class="input"
+                  className="input"
                   type="text"
                   placeholder="i.e. Kim Deal"
                   value={customerName}
                   onChange={this.handleChange}
                 />
-                <span class="icon is-small is-left">
-                  <i class="fas fa-user"></i>
+                <span className="icon is-small is-left">
+                  <i className="fas fa-user"></i>
                 </span>
               </div>
             </div>
 
-            <div class="field">
-              <label class="label">Phone</label>
-              <div class="control has-icons-left has-icons-right">
+            <div className="field">
+              <label className="label">Phone</label>
+              <div className="control has-icons-left has-icons-right">
                 <input
                   id="phoneNumber"
-                  class="input"
+                  className="input"
                   type="text"
                   placeholder="i.e. 555-444-5555"
                   value={phoneNumber}
                   onChange={this.handleChange}
                 />
-                <span class="icon is-small is-left">
-                  <i class="fas fa-phone"></i>
+                <span className="icon is-small is-left">
+                  <i className="fas fa-phone"></i>
                 </span>
               </div>
             </div>
 
-            <div class="field">
-              <label class="label">Service</label>
-              <div class="control">
-                <div class="select">
-                  <select value={service} onChange={this.handleChange} id="service">
-                    {serviceList.map((service) => (
-                      <option>{service.option}</option>
+            <div className="field">
+              <label className="label">Service</label>
+              <div className="control">
+                <div className="select">
+                  <select
+                    value={service}
+                    onChange={this.handleChange}
+                    id="service"
+                  >
+                    {serviceList.map(({ option }) => (
+                      <option key={option}>{option}</option>
                     ))}
                   </select>
                 </div>
@@ -125,62 +144,80 @@ class Form extends Component {
 
             {/* <!-- Dropped off: */}
 
-            <div class="field">
-              <label class="label">Dropped off</label>
-              <div class="control has-icons-left">
-                <input class="input" value={timeDroppedOff}type="text" placeholder="enter date" onChange={this.handleChange} id="timeDroppedOff"/>
-                <span class="icon is-small is-left">
-                  <i class="fas fa-calendar"></i>
+            <div className="field">
+              <label className="label">Dropped off</label>
+              <div className="control has-icons-left">
+                <input
+                  className="input"
+                  value={timeDroppedOff}
+                  type="text"
+                  placeholder="enter date"
+                  onChange={this.handleChange}
+                  id="timeDroppedOff"
+                />
+                <span className="icon is-small is-left">
+                  <i className="fas fa-calendar"></i>
                 </span>
               </div>
             </div>
 
-            <div class="field">
-              <label class="label">Est. Pickup</label>
-              <div class="control has-icons-left">
-                <input class="input" id="timeEstimatedPickup" type="text" placeholder="enter date"onChange={this.handleChange} value={timeEstimatedPickup} />
-                <span class="icon is-small is-left">
-                  <i class="fas fa-calendar"></i>
+            <div className="field">
+              <label className="label">Est. Pickup</label>
+              <div className="control has-icons-left">
+                <input
+                  className="input"
+                  id="timeEstimatedPickup"
+                  type="text"
+                  placeholder="enter date"
+                  onChange={this.handleChange}
+                  value={timeEstimatedPickup}
+                />
+                <span className="icon is-small is-left">
+                  <i className="fas fa-calendar"></i>
                 </span>
               </div>
             </div>
 
-            <div class="field">
-              <label class="label">Tech</label>
-              <div class="control">
-                <div class="select">
-                  <select value={employeeName} id="employeeName" onChange={this.handleChange}>
-                    {employeeList.map((emp) => (
-                      <option>{emp.option}</option>
+            <div className="field">
+              <label className="label">Tech</label>
+              <div className="control">
+                <div className="select">
+                  <select
+                    value={employeeName}
+                    id="employeeName"
+                    onChange={this.handleChange}
+                  >
+                    {employeeList.map(({ option }) => (
+                      <option key={option}>{option}</option>
                     ))}
                   </select>
                 </div>
               </div>
             </div>
 
-            <div class="field">
-              <label class="label">Estimate</label>
-              <div class="control has-icons-left">
+            <div className="field">
+              <label className="label">Estimate</label>
+              <div className="control has-icons-left">
                 <input
-                  class="input"
+                  className="input"
                   type="text"
                   placeholder="enter dollar amount"
                   value={estimate}
                   onChange={this.handleChange}
                   id="estimate"
                 />
-                <span class="icon is-small is-left">
-                  <i class="fas fa-dollar-sign"></i>
+                <span className="icon is-small is-left">
+                  <i className="fas fa-dollar-sign"></i>
                 </span>
               </div>
             </div>
 
-            <div class="field">
-              <label class="label">Notes</label>
-              <div class="control">
+            <div className="field">
+              <label className="label">Notes</label>
+              <div className="control">
                 <textarea
                   id="notes"
-                  class="textarea"
+                  className="textarea"
                   placeholder="Add details here"
                   value={notes}
                   onChange={this.handleChange}
@@ -188,23 +225,28 @@ class Form extends Component {
               </div>
             </div>
 
-            <div class="field">
-              <div class="control">
-                <label class="checkbox">
-                  <input type="checkbox" checked={rushOrder} id="rushOrder" onChange={this.handleChange}/>
+            <div className="field">
+              <div className="control">
+                <label className="checkbox">
+                  <input
+                    type="checkbox"
+                    checked={rushOrder}
+                    id="rushOrder"
+                    onChange={this.handleChange}
+                  />
                   Rush order?
                 </label>
               </div>
             </div>
 
-            <div class="field is-grouped">
-              <div class="control">
-                <button type="submit" class="button is-link">
+            <div className="field is-grouped">
+              <div className="control">
+                <button type="submit" className="button is-link">
                   Submit
                 </button>
               </div>
-              <div class="control">
-                <button class="button is-link is-light">Cancel</button>
+              <div className="control">
+                <button className="button is-link is-light">Cancel</button>
               </div>
             </div>
           </div>

@@ -2,9 +2,9 @@ import React from "react";
 
 const SearchInput = () => {
   return (
-    <p class="control">
-          <input class="input" type="text" placeholder="Enter Text" />
-    </p>
+    <div className="control">
+          <input className="input" type="text" placeholder="Enter Text" />
+    </div>
   );
 };
 

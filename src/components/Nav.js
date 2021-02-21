@@ -1,24 +1,27 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Nav = (props) => {
-
   const handleClick = () => props.openNewOrderModal();
 
   return (
     <div className="container">
-      <div className="tabs is-medium mb-2">
+      <nav className="tabs mb-2">
         <ul>
           <li className="is-active">
-            <a>Current</a>
+            <Link to="/">Current</Link>
           </li>
           <li>
-            <a>Completed</a>
+            <Link to="/completed">Completed</Link>
           </li>
           <li>
-            <a onClick={handleClick}>New</a>
+            <Link to="/archived">Archived</Link>
+          </li>
+          <li>
+            <Link to="/new">New</Link>
           </li>
         </ul>
-      </div>
+      </nav>
     </div>
   );
 };
