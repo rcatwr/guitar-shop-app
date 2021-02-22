@@ -1,6 +1,6 @@
 import React from 'react'
 
-const OrderCard = ({order}) => {
+const OrderCard = ({order, orderDelete}) => {
   const {
     orderId,
     itemDescription,
@@ -14,6 +14,14 @@ const OrderCard = ({order}) => {
     employeeName,
     rushOrder,
   } = order;
+   
+
+    const handleClick = (e) => {
+     if  (e.target.id === "delete") {
+        //update the state in main create orderDelete callback
+        orderDelete(orderId)
+      }
+    }
 
     return (
         <div className="container">
@@ -59,7 +67,7 @@ const OrderCard = ({order}) => {
             <strong>Notes:</strong> {notes}
           </p>
 
-          <button className="button is-danger is-light is-pulled-right">
+          <button id="delete" className="button is-danger is-light is-pulled-right" onClick={handleClick}>
             Delete
           </button>
           <button id="updateOrder" className="button is-primary is-light">

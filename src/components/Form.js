@@ -5,8 +5,8 @@ import { Redirect } from "react-router-dom";
 
 class Form extends Component {
   state = {
-    newOrder: {
-      orderId: 45,
+    order: {
+      orderId: "",
       itemDescription: "",
       customerName: "",
       phoneNumber: "",
@@ -17,31 +17,38 @@ class Form extends Component {
       timeDroppedOff: "",
       timeEstimatedPickup: "",
       employeeName: "",
+      completed: false,
+      archived: false,
+      deleted: false,
+      new: true,
     },
     redirect: false,
   };
 
-  // this.setState({
-  //   access: {
-  //     ...this.state.access,
-  //     hospital_id: 1,
-  //   },
-  // });
+  componentDidMount = () => {
+    if (this.state.order.new)
+      this.setState({
+        order: { ...this.state.order, orderId: this.props.newOrderId() },
+      });
+  };
 
   handleChange = (e) => {
     if (e.target.type === "checkbox") {
-      this.setState({ rushOrder: e.target.checked });
+      this.setState({
+        order: { ...this.state.order, rushOrder: e.target.checked },
+      });
     } else {
       this.setState({
-        newOrder: { ...this.state.newOrder, [e.target.id]: e.target.value },
+        order: { ...this.state.order, [e.target.id]: e.target.value },
       });
     }
   };
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.props.formSubmitted(this.state.newOrder);
-
+    //set new to false on submit!
+    this.setState({ order: { ...this.state.order, new: false } });
+    this.props.formSubmitted(this.state.order);
     this.setState({ redirect: true });
   };
 
@@ -58,9 +65,8 @@ class Form extends Component {
       timeEstimatedPickup,
       employeeName,
       rushOrder,
-    } = this.state.newOrder;
+    } = this.state.order;
 
-    
     if (this.state.redirect) return <Redirect to="/" />;
 
     return (
@@ -70,7 +76,7 @@ class Form extends Component {
             <p className="is-size-4">
               <span className="fredoka">New Order </span>
               <span className="tag is-large is-darker is-link is-pulled-right">
-                {orderId}
+                #{orderId}
               </span>
             </p>
 
@@ -233,7 +239,7 @@ class Form extends Component {
                     checked={rushOrder}
                     id="rushOrder"
                     onChange={this.handleChange}
-                  />
+                  />&nbsp;
                   Rush order?
                 </label>
               </div>
@@ -246,7 +252,18 @@ class Form extends Component {
                 </button>
               </div>
               <div className="control">
-                <button className="button is-link is-light">Cancel</button>
+                <button
+                  className="button is-link is-light"
+                  onClick={
+                    (e) => {
+                    //cancels and redirects!
+                    e.preventDefault()
+                    this.setState({ redirect: true });
+                  }
+                  
+                  }>
+                  Cancel
+                </button>
               </div>
             </div>
           </div>

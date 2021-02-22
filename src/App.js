@@ -27,8 +27,20 @@ class App extends React.Component {
   }
 
   formSubmitted = (newOrder) => {
+    //callback spreads in the new order in Form
     this.setState({ orders: [...this.state.orders, newOrder] });
   };
+
+  orderDelete = (id) => {
+    const deletedOrderUpdate = this.state.orders.map(order => order.orderId === id 
+      ? {...order, deleted: true }
+      : order );
+   
+    this.setState({
+       orders: deletedOrderUpdate
+    })
+    //set state on this to set it to 'delete' = true
+  }
 
   openNewOrderModal = () => {
     this.setState({ modalShow: true });
@@ -36,6 +48,10 @@ class App extends React.Component {
 
   closeModal = () => {
     this.setState({ modalShow: false });
+  };
+
+  newOrderId = () => {
+    return Math.max(...this.state.orders.map(order => order.orderId)) + 1;
   };
 
   render() {
@@ -59,9 +75,12 @@ class App extends React.Component {
               <Route exact path="/">
                 <CurrentOrders>
                   <SearchTool />
-                  {this.state.orders.map((order, i) => (
-                    <OrderCard key={i} order={order} />
-                  ))}
+                  {this.state.orders.map((order, i) => 
+                    
+                    !order.deleted ? <OrderCard key={i} order={order} orderDelete={this.orderDelete} /> : null
+                  
+                  
+                  )}
                 </CurrentOrders>
               </Route>
 
@@ -85,7 +104,10 @@ class App extends React.Component {
 
               <Route path="/new">
                 <NewOrder>
-                  <Form formSubmitted={this.formSubmitted} />
+                  <Form
+                    formSubmitted={this.formSubmitted}
+                    newOrderId={this.newOrderId}
+                  />
                 </NewOrder>
               </Route>
             </Switch>

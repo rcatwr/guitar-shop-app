@@ -2,7 +2,10 @@ import React from 'react'
 
 const NewOrder = props => {
     return (
-        <>{props.children}</>
+        <>
+        
+        {props.children}
+        </>
     )
 }
  export default NewOrder;

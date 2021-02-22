@@ -5,14 +5,15 @@
     "estimate": "120",
     "itemDescription": "1965 Danelectro",
     "notes": "Needs the pots and caps upgraded",
-    "orderId": 45,
+    "orderId": 1,
     "phoneNumber": "555-254-8899",
     "rushOrder": false,
     "service": "Electronics",
     "timeDroppedOff": "Dec 12",
     "timeEstimatedPickup": "Dec 14",
-    "completed": "false",
-    "archived": "false"
+    "completed": false,
+    "archived": false,
+    "deleted": false
   },
   {
     "customerName": "Will Donner",
@@ -20,14 +21,15 @@
     "estimate": "65",
     "itemDescription": "1982 Fender Lead",
     "notes": "Just a basic setup",
-    "orderId": 45,
+    "orderId": 2,
     "phoneNumber": "555-255-4545",
     "rushOrder": true,
     "service": "Setup",
     "timeDroppedOff": "Dec 14",
     "timeEstimatedPickup": "Dec 17",
-    "completed": "false",
-    "archived": "false"
+    "completed": false,
+    "archived": false,
+    "deleted": false
   },
   {
     "customerName": "Sarah Smith",
@@ -35,14 +37,15 @@
     "estimate": "65",
     "itemDescription": "1971 Gibson Les Paul Deluxe",
     "notes": "Just a basic setup -- likes 12's in GHS",
-    "orderId": 45,
+    "orderId": 3,
     "phoneNumber": "555-255-4545",
     "rushOrder": true,
     "service": "Setup",
     "timeDroppedOff": "Dec 14",
     "timeEstimatedPickup": "Dec 17",
-    "completed": "false",
-    "archived": "false"
+    "completed": false,
+    "archived": false,
+    "deleted": false
   },
   {
     "customerName": "Lisa G",
@@ -50,13 +53,14 @@
     "estimate": "65",
     "itemDescription": "1971 Music Man Stingray Bass",
     "notes": "Replace tuning machines",
-    "orderId": 45,
+    "orderId": 4,
     "phoneNumber": "555-200-6666",
     "rushOrder": false,
     "service": "Hardware",
     "timeDroppedOff": "Dec 30",
     "timeEstimatedPickup": "Jan 7",
-    "completed": "false",
-    "archived": "false"
+    "completed": false,
+    "archived": false,
+    "deleted": false
   }
 ]
