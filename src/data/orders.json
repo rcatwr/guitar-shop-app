@@ -13,7 +13,8 @@
     "timeEstimatedPickup": "Dec 14",
     "completed": false,
     "archived": false,
-    "deleted": false
+    "deleted": false,
+    "deleteConfirm": false
   },
   {
     "customerName": "Will Donner",
