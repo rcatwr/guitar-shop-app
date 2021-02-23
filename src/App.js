@@ -76,7 +76,10 @@ class App extends React.Component {
     const toggleDeleteConfirmModal = this.state.confirmDeleteModalShow ? (
       <Modal>
         <div class="notification">
-          <button class="delete" onClick={()=>this.setState({confirmDeleteModalShow:false})}></button>
+          <button
+            class="delete"
+            onClick={() => this.setState({ confirmDeleteModalShow: false })}
+          ></button>
           <p className>Are you sure you want to delete: </p>
           <p className="is-size-4 mb-5">
             <span className="fredoka">
@@ -98,10 +101,10 @@ class App extends React.Component {
           >
             Delete
           </button>{" "}
-          <button 
+          <button
             className="button is-primary is-small is-light"
-            onClick={()=>this.setState({confirmDeleteModalShow:false})}
-            >
+            onClick={() => this.setState({ confirmDeleteModalShow: false })}
+          >
             Cancel
           </button>
         </div>
