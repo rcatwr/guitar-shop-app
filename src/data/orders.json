@@ -29,7 +29,8 @@
     "timeEstimatedPickup": "Dec 17",
     "completed": false,
     "archived": false,
-    "deleted": false
+    "deleted": false,
+    "deleteConfirm": false
   },
   {
     "customerName": "Sarah Smith",
@@ -45,7 +46,8 @@
     "timeEstimatedPickup": "Dec 17",
     "completed": false,
     "archived": false,
-    "deleted": false
+    "deleted": false,
+    "deleteConfirm": false
   },
   {
     "customerName": "Lisa G",
@@ -61,6 +63,7 @@
     "timeEstimatedPickup": "Jan 7",
     "completed": false,
     "archived": false,
-    "deleted": false
+    "deleted": false,
+    "deleteConfirm": false
   }
 ]
