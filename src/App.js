@@ -22,6 +22,11 @@ class App extends React.Component {
     orderConfirmDelete: {},
     showSearchOptions: false,
     orders: [],
+    cardStatusTotals: {
+      current: "",
+      completed: "",
+      archived: "",
+    },
   };
 
   componentDidMount() {
@@ -65,14 +70,63 @@ class App extends React.Component {
     return Math.max(...this.state.orders.map((order) => order.orderId)) + 1;
   };
 
-  render() {
-    const toggleModalDisplay = this.state.modalShow ? (
-      <Modal>
-        {" "}
-        <Form formSubmitted={this.formSubmitted} closeModal={this.closeModal} />
-      </Modal>
-    ) : null;
+  countCardStatus = (orders) => {
+    const cardDisplayLogic = (o) => ({
+      current: !o.deleted && !o.completed,
+      completed: o.completed && !o.deleted && !o.archived,
+      archived: o.archived && !o.deleted,
+    });
 
+    const ordersCount = (stat) =>
+      orders.filter((order) => {
+        return cardDisplayLogic(order)[stat] ? order : null;
+      }).length;
+
+    //this.setState({ cardStatusTotals: {...this.state.cardStatusTotals, newOrder} });
+
+    return {
+      current: ordersCount("current"),
+      completed: ordersCount("completed"),
+      archived: ordersCount("archived"),
+    };
+  };
+
+  showCardsLogic = (status, orders) => {
+    const cardDisplay = (o) => ({
+      current: !o.deleted && !o.completed,
+      completed: o.completed && !o.deleted && !o.archived,
+      archived: o.archived && !o.deleted,
+    });
+
+    const ordersEmptyBin = orders.filter((order) => {
+      return cardDisplay(order)[status] ? order : null;
+    });
+
+    const listOrders = orders.map((order, i) => {
+      return cardDisplay(order)[status] ? (
+        <OrderCard
+          key={i}
+          order={order}
+          orderStatusUpdate={this.orderStatusUpdate}
+        />
+      ) : null;
+    });
+
+    
+
+    return ordersEmptyBin.length ? (
+      listOrders
+    ) : (
+      <div class="box is-justify-content-center is-flex p-5">
+        <p className="is-size-4 fredoka">
+          <i className="fas fa-hand-point-right has-text-info"></i> There are no{" "}
+          {status} orders!
+        </p>
+      </div>
+    );
+  };
+
+  render() {
     const toggleDeleteConfirmModal = this.state.confirmDeleteModalShow ? (
       <Modal>
         <div class="notification">
@@ -118,51 +172,30 @@ class App extends React.Component {
 
         <Main showSearchOptions={this.state.showSearchOptions}>
           <BrowserRouter>
-            <Nav />
+            <Nav orderStatus={this.countCardStatus(this.state.orders)} />
 
             <Switch>
               <Route exact path="/">
                 <CurrentOrders>
                   <SearchTool />
-                  {this.state.orders.map((order, i) =>
-                    !order.deleted && !order.completed ? (
-                      <OrderCard
-                        key={i}
-                        order={order}
-                        orderStatusUpdate={this.orderStatusUpdate}
-                      />
-                    ) : null
-                  )}
+
+                  {this.showCardsLogic("current", this.state.orders)}
                 </CurrentOrders>
               </Route>
 
               <Route path="/completed">
                 <CompletedOrders>
                   <SearchTool />
-                  {this.state.orders.map((order, i) =>
-                    order.completed && !order.deleted && !order.archived ? (
-                      <OrderCard
-                        key={i}
-                        order={order}
-                        orderStatusUpdate={this.orderStatusUpdate}
-                      />
-                    ) : null
-                  )}
+
+                  {this.showCardsLogic("completed", this.state.orders)}
                 </CompletedOrders>
               </Route>
 
               <Route path="/archived">
                 <ArchivedOrders>
                   <SearchTool />
-                  {this.state.orders.map((order, i) =>
-                    order.archived && !order.deleted ? (
-                      <OrderCard
-                        key={i}
-                        order={order}
-                        orderStatusUpdate={this.orderStatusUpdate}
-                      />
-                    ) : null
-                  )}
+
+                  {this.showCardsLogic("archived", this.state.orders)}
                 </ArchivedOrders>
               </Route>
 
