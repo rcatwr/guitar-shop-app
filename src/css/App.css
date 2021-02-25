@@ -2,3 +2,16 @@
   font-family: "Fredoka One";
 }
 
+.react-datepicker-popper{
+  z-index: 5 !important;
+  
+}
+
+.react-datepicker {
+  font-family: BlinkMacSystemFont,-apple-system,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Fira Sans","Droid Sans","Helvetica Neue",Helvetica,Arial,sans-serif !important;
+}
+
+.react-datepicker__day--selected {
+  background-color: #3273dc important!;
+}
+

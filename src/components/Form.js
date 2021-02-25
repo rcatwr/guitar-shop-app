@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import serviceList from "../data/serviceList.json";
 import employeeList from "../data/employeeList.json";
 import { Redirect } from "react-router-dom";
+import DatePicker from 'react-datepicker'
+import "react-datepicker/dist/react-datepicker.css";
+
 
 class Form extends Component {
   state = {
@@ -14,8 +17,8 @@ class Form extends Component {
       estimate: "",
       notes: "",
       rushOrder: false,
-      timeDroppedOff: "",
-      timeEstimatedPickup: "",
+      timeDroppedOff: '',
+      timeEstimatedPickup: '',
       employeeName: "",
       completed: false,
       archived: false,
@@ -70,7 +73,7 @@ class Form extends Component {
     if (this.state.redirect) return <Redirect to="/" />;
 
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form autoComplete='off' onSubmit={this.handleSubmit}>
         <div className="container pt-6">
           <div className="box content">
             <p className="is-size-4">
@@ -153,14 +156,19 @@ class Form extends Component {
             <div className="field">
               <label className="label">Dropped off</label>
               <div className="control has-icons-left">
-                <input
+                <DatePicker
                   className="input"
-                  value={timeDroppedOff}
+                  selected={timeDroppedOff}
+                  autoComplete='off'
                   type="text"
                   placeholder="enter date"
-                  onChange={this.handleChange}
+                  onChange={date => this.setState({order: { ...this.state.order, timeDroppedOff: date }})}
                   id="timeDroppedOff"
+                  dateFormat="MMMM d, yyyy"
                 />
+                 
+
+
                 <span className="icon is-small is-left">
                   <i className="fas fa-calendar"></i>
                 </span>
@@ -170,13 +178,15 @@ class Form extends Component {
             <div className="field">
               <label className="label">Est. Pickup</label>
               <div className="control has-icons-left">
-                <input
+                <DatePicker
                   className="input"
                   id="timeEstimatedPickup"
                   type="text"
                   placeholder="enter date"
-                  onChange={this.handleChange}
-                  value={timeEstimatedPickup}
+                  onChange={date => this.setState({order: { ...this.state.order, timeEstimatedPickup: date }})}
+                 autoComplete='off'
+                  selected={timeEstimatedPickup}
+                  dateFormat="MMMM d, yyyy"
                 />
                 <span className="icon is-small is-left">
                   <i className="fas fa-calendar"></i>

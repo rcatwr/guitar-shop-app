@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "./css/App.css";
+import "../node_modules/font-awesome/css/font-awesome.min.css"
 import CurrentOrders from "./components/CurrentOrders";
 import CompletedOrders from "./components/CompletedOrders";
 import ArchivedOrders from "./components/ArchivedOrders";
@@ -117,7 +118,7 @@ class App extends React.Component {
     return ordersEmptyBin.length ? (
       listOrders
     ) : (
-      <div class="box is-justify-content-center is-flex p-5">
+      <div className="box is-justify-content-center is-flex p-5">
         <p className="is-size-4 fredoka">
           <i className="fas fa-hand-point-right has-text-info"></i> There are no{" "}
           {status} orders!
@@ -129,9 +130,9 @@ class App extends React.Component {
   render() {
     const toggleDeleteConfirmModal = this.state.confirmDeleteModalShow ? (
       <Modal>
-        <div class="notification">
+        <div className="notification">
           <button
-            class="delete"
+            className="delete"
             onClick={() => this.setState({ confirmDeleteModalShow: false })}
           ></button>
           <p className>Are you sure you want to delete: </p>

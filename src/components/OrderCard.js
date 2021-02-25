@@ -1,4 +1,5 @@
 import React from "react";
+import moment from 'moment';
 
 const OrderCard = ({ order, orderStatusUpdate }) => {
   const {
@@ -52,10 +53,11 @@ const OrderCard = ({ order, orderStatusUpdate }) => {
           <span className="tag is-info">{service}</span>
         </p>
         <p>
-          <strong>Dropped off:</strong> {timeDroppedOff}
+          <strong>Dropped off:</strong> {moment(timeDroppedOff).format('dddd, MMMM Do YYYY')}
+
         </p>
         <p>
-          <strong>Expected by:</strong> {timeEstimatedPickup}
+          <strong>Expected by:</strong> {moment(timeEstimatedPickup).format('dddd, MMMM Do YYYY')}
         </p>
 
         <p>
