@@ -15,16 +15,20 @@ const Nav = (props) => {
           <li className={pathname === "/" ? "is-active" : null}>
             <Link to="/">
               Current &nbsp;
-              <strong>{props.orderStatus.current}</strong>
+              <strong>{props.orderStatus.current || ""}</strong>
             </Link>
           </li>
           <li className={pathname === "/completed" ? "is-active" : null}>
-            <Link to="/completed">Completed &nbsp;
-              <strong>{props.orderStatus.completed}</strong></Link>
+            <Link to="/completed">
+              Completed &nbsp;
+              <strong>{props.orderStatus.completed || ""}</strong>
+            </Link>
           </li>
           <li className={pathname === "/archived" ? "is-active" : null}>
-            <Link to="/archived">Archived &nbsp;
-              <strong>{props.orderStatus.archived}</strong></Link>
+            <Link to="/archived">
+              Archived &nbsp;
+              <strong>{props.orderStatus.archived || ""}</strong>
+            </Link>
           </li>
           <li className={pathname === "/new" ? "is-active" : null}>
             <Link to="/new">New</Link>

@@ -82,7 +82,7 @@ class App extends React.Component {
         return cardDisplayLogic(order)[stat] ? order : null;
       }).length;
 
-    //this.setState({ cardStatusTotals: {...this.state.cardStatusTotals, newOrder} });
+   
 
     return {
       current: ordersCount("current"),
