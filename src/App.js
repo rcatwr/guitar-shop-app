@@ -1,7 +1,8 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "./css/App.css";
-import "../node_modules/font-awesome/css/font-awesome.min.css"
+import "../node_modules/font-awesome/css/font-awesome.min.css";
+import _ from 'lodash'
 import CurrentOrders from "./components/CurrentOrders";
 import CompletedOrders from "./components/CompletedOrders";
 import ArchivedOrders from "./components/ArchivedOrders";
@@ -22,6 +23,9 @@ class App extends React.Component {
     updateOrderModalShow: false,
     orderConfirmDelete: {},
     showSearchOptions: false,
+    sortBy: "orderId",
+    sortDir: "asc",
+    searchTerm: '',
     orders: [],
     cardStatusTotals: {
       current: "",
@@ -31,6 +35,8 @@ class App extends React.Component {
   };
 
   componentDidMount() {
+ 
+
     this.setState({ orders });
   }
 
@@ -71,6 +77,18 @@ class App extends React.Component {
     return Math.max(...this.state.orders.map((order) => order.orderId)) + 1;
   };
 
+  searchByText = (text) => {
+    this.setState({searchTerm: text.toLowerCase().trim()})
+  }
+
+  sortCardOrder = (sortBy) => {
+    this.setState({ sortBy });
+  };
+
+  sortCardDir = (sortDir) => {
+    this.setState({ sortDir });
+  };
+
   countCardStatus = (orders) => {
     const cardDisplayLogic = (o) => ({
       current: !o.deleted && !o.completed,
@@ -82,8 +100,6 @@ class App extends React.Component {
       orders.filter((order) => {
         return cardDisplayLogic(order)[stat] ? order : null;
       }).length;
-
-   
 
     return {
       current: ordersCount("current"),
@@ -98,12 +114,24 @@ class App extends React.Component {
       completed: o.completed && !o.deleted && !o.archived,
       archived: o.archived && !o.deleted,
     });
+     
+     let orderByval = this.state.sortBy;
 
-    const ordersEmptyBin = orders.filter((order) => {
+    const sortedRecords = _.sortBy(orders, [function(o) { return o[orderByval]; }] )  
+    
+    if(this.state.sortDir === 'desc') sortedRecords.reverse();
+
+    let re = new RegExp(`${this.state.searchTerm}`,"gi") 
+
+    let textSearchedRecords = sortedRecords.filter(i => re.test(i[this.state.sortBy]) ? i : null)
+   
+    
+
+    const ordersEmptyBin = textSearchedRecords.filter((order) => {
       return cardDisplay(order)[status] ? order : null;
     });
 
-    const listOrders = orders.map((order, i) => {
+    const listOrders = textSearchedRecords.map((order, i) => {
       return cardDisplay(order)[status] ? (
         <OrderCard
           key={i}
@@ -112,8 +140,6 @@ class App extends React.Component {
         />
       ) : null;
     });
-
-    
 
     return ordersEmptyBin.length ? (
       listOrders
@@ -174,11 +200,15 @@ class App extends React.Component {
         <Main showSearchOptions={this.state.showSearchOptions}>
           <BrowserRouter>
             <Nav orderStatus={this.countCardStatus(this.state.orders)} />
-
+            <SearchTool
+              sortCardOrder={this.sortCardOrder}
+              sortCardDir={this.sortCardDir}
+              searchByText ={this.searchByText}
+            />
             <Switch>
               <Route exact path="/">
                 <CurrentOrders>
-                  <SearchTool />
+                  {/* <SearchTool /> */}
 
                   {this.showCardsLogic("current", this.state.orders)}
                 </CurrentOrders>
@@ -186,7 +216,7 @@ class App extends React.Component {
 
               <Route path="/completed">
                 <CompletedOrders>
-                  <SearchTool />
+                  {/* <SearchTool /> */}
 
                   {this.showCardsLogic("completed", this.state.orders)}
                 </CompletedOrders>
@@ -194,7 +224,7 @@ class App extends React.Component {
 
               <Route path="/archived">
                 <ArchivedOrders>
-                  <SearchTool />
+                  {/* <SearchTool /> */}
 
                   {this.showCardsLogic("archived", this.state.orders)}
                 </ArchivedOrders>

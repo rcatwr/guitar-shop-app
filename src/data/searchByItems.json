@@ -1,7 +1,7 @@
 [
   { "id": "orderId", "text": "Order Id" },
   { "id": "customerName", "text": "Customer" },
-  { "id": "item", "text": "Item" },
+  { "id": "itemDescription", "text": "Item" },
   { "id": "dropOffDate", "text": "Dropoff" },
   { "id": "service", "text": "Service" }
 ]

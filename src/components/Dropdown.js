@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import _ from 'lodash'
+import _ from "lodash";
 import "../css/Dropdown.css";
 import searchByItems from "../data/searchByItems.json";
 
-const Dropdown = () => {
+const Dropdown = ({ sortCardOrder, sortCardDir }) => {
   const [dropdownActive, setDropDownActive] = useState(false);
   const [dropdownItemActive, setDropdownItemActive] = useState("orderId");
   const [searchOrder, setSearchOrder] = useState("desc");
@@ -14,11 +14,18 @@ const Dropdown = () => {
     } else {
       setDropDownActive(false);
     }
-    
   };
 
-  const textIndex = _.findIndex(searchByItems, {"id": dropdownItemActive})
- 
+  const updateCardSearch = (input) => {
+    if (input === "asc" || input === "desc") {
+      sortCardDir(input);
+    } else {
+      sortCardOrder(input);
+    }
+  };
+
+  const textIndex = _.findIndex(searchByItems, { id: dropdownItemActive });
+
   const isActive = dropdownActive ? "is-active" : null;
 
   const searchOrderText = {
@@ -49,15 +56,18 @@ const Dropdown = () => {
       </div>
       <div className="dropdown-menu" id="dropdown-menu" role="menu">
         <div className="dropdown-content">
-
           {searchByItems.map((item) => {
             return (
-              <a key={item.id}
-               
+              <a
+                id={item.id}
+                key={item.id}
                 className={`dropdown-item ${
                   dropdownItemActive === item.id ? "is-active" : null
                 }`}
-                onClick={() => setDropdownItemActive(item.id)}
+                onClick={() => {
+                  setDropdownItemActive(item.id);
+                  updateCardSearch(item.id);
+                }}
               >
                 {item.text}
               </a>
@@ -66,21 +76,25 @@ const Dropdown = () => {
 
           <hr className="dropdown-divider" />
           <a
-           
             className={`dropdown-item ${
               searchOrder === "asc" ? "is-active" : null
             }`}
-            onClick={() => setSearchOrder("asc")}
+            onClick={() => {
+              setSearchOrder("asc");
+              updateCardSearch("asc");
+            }}
           >
             {" "}
             ascending{" "}
           </a>
           <a
-            
             className={`dropdown-item ${
               searchOrder === "desc" ? "is-active" : null
             }`}
-            onClick={() => setSearchOrder("desc")}
+            onClick={() => {
+              setSearchOrder("desc");
+              updateCardSearch("desc");
+            }}
           >
             {" "}
             descending{" "}
