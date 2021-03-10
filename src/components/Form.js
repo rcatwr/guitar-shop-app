@@ -2,9 +2,8 @@ import React, { Component } from "react";
 import serviceList from "../data/serviceList.json";
 import employeeList from "../data/employeeList.json";
 import { Redirect } from "react-router-dom";
-import DatePicker from 'react-datepicker'
+import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
 
 class Form extends Component {
   state = {
@@ -17,8 +16,8 @@ class Form extends Component {
       estimate: "",
       notes: "",
       rushOrder: false,
-      timeDroppedOff: '',
-      timeEstimatedPickup: '',
+      timeDroppedOff: "",
+      timeEstimatedPickup: "",
       employeeName: "",
       completed: false,
       archived: false,
@@ -29,10 +28,30 @@ class Form extends Component {
   };
 
   componentDidMount = () => {
-    if (this.state.order.new)
+    if (this.props.newOrderId) {
       this.setState({
         order: { ...this.state.order, orderId: this.props.newOrderId() },
       });
+    }
+
+    if (this.props.orderToUpdate) {
+      this.setState({
+        order: this.props.orderToUpdate,
+      });
+
+      //fix to get my mocked data to work with moment.js
+      if (typeof this.props.orderToUpdate.timeDroppedOff === "string") {
+        this.setState({
+          order: {
+            ...this.props.orderToUpdate,
+            timeDroppedOff: new Date(this.props.orderToUpdate.timeDroppedOff),
+            timeEstimatedPickup: new Date(
+              this.props.orderToUpdate.timeEstimatedPickup
+            ),
+          },
+        });
+      }
+    }
   };
 
   handleChange = (e) => {
@@ -51,8 +70,17 @@ class Form extends Component {
     e.preventDefault();
     //set new to false on submit!
     this.setState({ order: { ...this.state.order, new: false } });
-    this.props.formSubmitted(this.state.order);
-    this.setState({ redirect: true });
+    // // try this:
+    // //if (this.props.formSubmitted) 
+    // this.props.formSubmitted(this.state.order);
+
+    if (this.props.updateOrderModal) {
+      this.props.formSubmitted(this.state.order, true)
+      this.props.updateOrderModal(false);
+    } else {
+      this.props.formSubmitted(this.state.order, false)
+      this.setState({ redirect: true });
+    }
   };
 
   render() {
@@ -73,7 +101,7 @@ class Form extends Component {
     if (this.state.redirect) return <Redirect to="/" />;
 
     return (
-      <form autoComplete='off' onSubmit={this.handleSubmit}>
+      <form autoComplete="off" onSubmit={this.handleSubmit}>
         <div className="container pt-6">
           <div className="box content">
             <p className="is-size-4">
@@ -159,15 +187,17 @@ class Form extends Component {
                 <DatePicker
                   className="input"
                   selected={timeDroppedOff}
-                  autoComplete='off'
+                  autoComplete="off"
                   type="text"
                   placeholder="enter date"
-                  onChange={date => this.setState({order: { ...this.state.order, timeDroppedOff: date }})}
+                  onChange={(date) =>
+                    this.setState({
+                      order: { ...this.state.order, timeDroppedOff: date },
+                    })
+                  }
                   id="timeDroppedOff"
                   dateFormat="MMMM d, yyyy"
                 />
-                 
-
 
                 <span className="icon is-small is-left">
                   <i className="fas fa-calendar"></i>
@@ -183,8 +213,12 @@ class Form extends Component {
                   id="timeEstimatedPickup"
                   type="text"
                   placeholder="enter date"
-                  onChange={date => this.setState({order: { ...this.state.order, timeEstimatedPickup: date }})}
-                 autoComplete='off'
+                  onChange={(date) =>
+                    this.setState({
+                      order: { ...this.state.order, timeEstimatedPickup: date },
+                    })
+                  }
+                  autoComplete="off"
                   selected={timeEstimatedPickup}
                   dateFormat="MMMM d, yyyy"
                 />
@@ -249,8 +283,8 @@ class Form extends Component {
                     checked={rushOrder}
                     id="rushOrder"
                     onChange={this.handleChange}
-                  />&nbsp;
-                  Rush order?
+                  />
+                  &nbsp; Rush order?
                 </label>
               </div>
             </div>
@@ -264,14 +298,16 @@ class Form extends Component {
               <div className="control">
                 <button
                   className="button is-link is-light"
-                  onClick={
-                    (e) => {
+                  onClick={(e) => {
                     //cancels and redirects!
-                    e.preventDefault()
-                    this.setState({ redirect: true });
-                  }
-                  
-                  }>
+                    e.preventDefault();
+                    if (this.state.order.new) {
+                      this.setState({ redirect: true });
+                    } else {
+                      this.props.updateOrderModal(false);
+                    }
+                  }}
+                >
                   Cancel
                 </button>
               </div>

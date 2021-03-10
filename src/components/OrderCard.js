@@ -19,6 +19,7 @@ const OrderCard = ({ order, orderStatusUpdate }) => {
   } = order;
 
   const handleClick = (e) => {
+    // send 'updateOrder' -- the id to the main App
     orderStatusUpdate(orderId, e.target.id);
   };
 
@@ -84,7 +85,12 @@ const OrderCard = ({ order, orderStatusUpdate }) => {
           </button>
         ) : null}
 
-        <button id="updateOrder" className="button is-primary is-light">
+        <button 
+          id="updateOrder" 
+          className="button is-primary is-light"
+          onClick={handleClick}
+          
+          >
           Update Info
         </button>
 

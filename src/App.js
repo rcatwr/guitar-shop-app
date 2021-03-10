@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "./css/App.css";
 import "../node_modules/font-awesome/css/font-awesome.min.css";
-import _ from 'lodash'
+import _ from "lodash";
 import CurrentOrders from "./components/CurrentOrders";
 import CompletedOrders from "./components/CompletedOrders";
 import ArchivedOrders from "./components/ArchivedOrders";
@@ -22,10 +22,11 @@ class App extends React.Component {
     confirmDeleteModalShow: false,
     updateOrderModalShow: false,
     orderConfirmDelete: {},
+    orderToUpdate: {},
     showSearchOptions: false,
     sortBy: "orderId",
     sortDir: "asc",
-    searchTerm: '',
+    searchTerm: "",
     orders: [],
     cardStatusTotals: {
       current: "",
@@ -35,20 +36,37 @@ class App extends React.Component {
   };
 
   componentDidMount() {
- 
-
     this.setState({ orders });
   }
 
-  formSubmitted = (newOrder) => {
+  formSubmitted = (newOrder, isUpdate) => {
     //callback spreads in the new order in Form
-    this.setState({ orders: [...this.state.orders, newOrder] });
+    console.log('NEW ORDER:', newOrder, 'order id:', newOrder.orderId)
+    if(isUpdate){
+      // filter the order out
+      const updatedList = this.state.orders.filter(order => order.orderId !== newOrder.orderId)
+      console.log('updated:' , updatedList)
+      this.setState({orders: [...updatedList, newOrder]});
+    } else{
+      this.setState({ orders: [...this.state.orders, newOrder] });
+
+    }
+
   };
 
   orderStatusUpdate = (id, trigger) => {
     if (trigger === "deleted" && !this.state.confirmDeleteModalShow) {
       return this.openConfirmDeleteModal(id);
     }
+    // open the order update modal in App if update button is selected in orderCard
+    // passes trigger and order id
+
+    if (trigger === "updateOrder") {
+      this.updateOrderModal(true);
+      this.updateOrderFormDisplay(id);
+      // use this for opening the order update modal
+    }
+
     const updatedOrders = this.state.orders.map((order) =>
       order.orderId === id ? { ...order, [trigger]: true } : order
     );
@@ -69,8 +87,27 @@ class App extends React.Component {
     this.setState({ confirmDeleteModalShow: true });
   };
 
-  updateOrderModal = () => {
-    this.setState({ updateOrderModalShow: true });
+  updateOrderModal = (bool) => {
+    this.setState({ updateOrderModalShow: bool ? true : false }) ;
+  };
+
+  
+
+  updateOrderFormDisplay = (id) => {
+    //find() callback
+    console.log("this id:", id);
+
+    function isOrderId(order) {
+      return order.orderId === id;
+    }
+    // sorts through and finds the object in orders
+
+    const orderToUpdate = this.state.orders.find(isOrderId);
+    // pass to props
+
+    console.log("order to update", orderToUpdate);
+    //return <Form updateOrderDetails={orderToUpdate} />;
+    this.setState({ orderToUpdate })
   };
 
   newOrderId = () => {
@@ -78,8 +115,8 @@ class App extends React.Component {
   };
 
   searchByText = (text) => {
-    this.setState({searchTerm: text.toLowerCase().trim()})
-  }
+    this.setState({ searchTerm: text.toLowerCase().trim() });
+  };
 
   sortCardOrder = (sortBy) => {
     this.setState({ sortBy });
@@ -114,18 +151,22 @@ class App extends React.Component {
       completed: o.completed && !o.deleted && !o.archived,
       archived: o.archived && !o.deleted,
     });
-     
-     let orderByval = this.state.sortBy;
 
-    const sortedRecords = _.sortBy(orders, [function(o) { return o[orderByval]; }] )  
-    
-    if(this.state.sortDir === 'desc') sortedRecords.reverse();
+    let orderByval = this.state.sortBy;
 
-    let re = new RegExp(`${this.state.searchTerm}`,"gi") 
+    const sortedRecords = _.sortBy(orders, [
+      function (o) {
+        return o[orderByval];
+      },
+    ]);
 
-    let textSearchedRecords = sortedRecords.filter(i => re.test(i[this.state.sortBy]) ? i : null)
-   
-    
+    if (this.state.sortDir === "desc") sortedRecords.reverse();
+
+    let re = new RegExp(`${this.state.searchTerm}`, "gi");
+
+    let textSearchedRecords = sortedRecords.filter((i) =>
+      re.test(i[this.state.sortBy]) ? i : null
+    );
 
     const ordersEmptyBin = textSearchedRecords.filter((order) => {
       return cardDisplay(order)[status] ? order : null;
@@ -154,8 +195,13 @@ class App extends React.Component {
   };
 
   render() {
+    const toggleUpdateOrderModalDisplay = this.state.updateOrderModalShow ? (
+      <Modal><Form orderToUpdate={this.state.orderToUpdate} updateOrderModal ={this.updateOrderModal} formSubmitted={this.formSubmitted} /></Modal>
+    ) : null;
+
     const toggleDeleteConfirmModal = this.state.confirmDeleteModalShow ? (
       <Modal>
+        {/* put the notification into its own component -- and get it out of the main app */}
         <div className="notification">
           <button
             className="delete"
@@ -195,6 +241,7 @@ class App extends React.Component {
     return (
       <>
         {toggleDeleteConfirmModal}
+        {toggleUpdateOrderModalDisplay}
         <Header />
 
         <Main showSearchOptions={this.state.showSearchOptions}>
@@ -203,7 +250,7 @@ class App extends React.Component {
             <SearchTool
               sortCardOrder={this.sortCardOrder}
               sortCardDir={this.sortCardDir}
-              searchByText ={this.searchByText}
+              searchByText={this.searchByText}
             />
             <Switch>
               <Route exact path="/">
