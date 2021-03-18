@@ -115,7 +115,7 @@ class App extends React.Component {
   };
 
   searchByText = (text) => {
-    this.setState({ searchTerm: text.toLowerCase().trim() });
+    this.setState({ searchTerm: text.toString().toLowerCase().trim() });
   };
 
   sortCardOrder = (sortBy) => {
