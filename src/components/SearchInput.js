@@ -6,7 +6,7 @@ const SearchInput = ({searchByText}) => {
           <input 
           className="input" 
           type="text" 
-          placeholder="Enter Text" 
+          placeholder="Search Orders By" 
           onChange={(e) => searchByText(e.target.value)}
           />
     </div>
