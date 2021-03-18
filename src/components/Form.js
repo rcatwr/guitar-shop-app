@@ -102,10 +102,10 @@ class Form extends Component {
 
     return (
       <form autoComplete="off" onSubmit={this.handleSubmit}>
-        <div className="container pt-6">
+        <div className={`container ${this.props.newOrderId ? 'pt-6' : null}`}>
           <div className="box content">
             <p className="is-size-4">
-              <span className="fredoka">New Order </span>
+              <span className="fredoka">{this.props.newOrderId ? 'New Order' : 'Update Order'} </span>
               <span className="tag is-large is-darker is-link is-pulled-right">
                 #{orderId}
               </span>
@@ -292,7 +292,7 @@ class Form extends Component {
             <div className="field is-grouped">
               <div className="control">
                 <button type="submit" className="button is-link">
-                  Submit
+                  {this.props.newOrderId ? 'Submit' : 'Update'}
                 </button>
               </div>
               <div className="control">

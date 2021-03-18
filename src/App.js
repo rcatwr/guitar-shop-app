@@ -195,6 +195,7 @@ class App extends React.Component {
   };
 
   render() {
+
     const toggleUpdateOrderModalDisplay = this.state.updateOrderModalShow ? (
       <Modal><Form orderToUpdate={this.state.orderToUpdate} updateOrderModal ={this.updateOrderModal} formSubmitted={this.formSubmitted} /></Modal>
     ) : null;
@@ -247,11 +248,12 @@ class App extends React.Component {
         <Main showSearchOptions={this.state.showSearchOptions}>
           <BrowserRouter>
             <Nav orderStatus={this.countCardStatus(this.state.orders)} />
-            <SearchTool
+           <SearchTool
               sortCardOrder={this.sortCardOrder}
               sortCardDir={this.sortCardDir}
               searchByText={this.searchByText}
             />
+           
             <Switch>
               <Route exact path="/">
                 <CurrentOrders>
