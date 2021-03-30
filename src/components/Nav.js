@@ -10,7 +10,7 @@ const Nav = (props) => {
   console.log(props.orderStatus);
   return (
     <div className="container">
-      <nav className="tabs is-toggle mb-2">
+      <nav className="tabs is-toggle mb-2 is-small">
         <ul>
           <li className={pathname === "/" ? "is-active" : null}>
             <Link to="/">

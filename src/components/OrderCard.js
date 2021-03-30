@@ -28,15 +28,16 @@ const OrderCard = ({ order, orderStatusUpdate }) => {
   return (
     <div className="container">
       <div className="box content">
+
+          <span className="tag is-large has-background-grey has-text-light is-pulled-right">
+            #{orderId}    </span>      
+         
+
         <p className="is-size-4">
-          <span className="fredoka">{itemDescription} </span>
-          {rushOrder ? (
-            <span className="tag is-small is-danger"> Rush </span>
-          ) : null}
-          <span className="tag is-large is-darker is-link is-pulled-right">
-            #{orderId}
-          </span>
+         <span className="fredoka">{itemDescription} </span>
+
         </p>
+    
         <p>
           <strong>
             <i className="fas fa-user"></i>
@@ -51,7 +52,9 @@ const OrderCard = ({ order, orderStatusUpdate }) => {
         </p>
         <p>
           <strong>Service(s):</strong>{" "}
-          <span className="tag is-info">{service}</span>
+          <span className="tag is-info">{service}</span>{rushOrder ? (
+             <span style ={{marginLeft:'3px'}} className="tag is-danger has-text-danger-light"> RUSH! </span>
+          ) : null}
         </p>
         <p>
           <strong>Dropped off:</strong>{" "}
@@ -78,7 +81,7 @@ const OrderCard = ({ order, orderStatusUpdate }) => {
             onClick={handleClick}
             className={`button is-${
               orderStatus === "complete" ? "success" : "warning"
-            } is-dark`}
+            } is-dark is-small`}
           >
             {orderStatus.charAt(0).toUpperCase()}
             {orderStatus.slice(1)}
@@ -87,7 +90,7 @@ const OrderCard = ({ order, orderStatusUpdate }) => {
 
         <button 
           id="updateOrder" 
-          className="button is-primary is-light"
+          className="button is-primary is-light is-small"
           onClick={handleClick}
           
           >
@@ -96,7 +99,7 @@ const OrderCard = ({ order, orderStatusUpdate }) => {
 
         <button
           id="deleted"
-          className="button is-danger is-light is-pulled-right"
+          className="button is-danger is-light is-pulled-right is-small"
           onClick={handleClick}
         >
           Delete
