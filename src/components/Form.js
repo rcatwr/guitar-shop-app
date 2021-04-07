@@ -24,21 +24,33 @@ const Form = (props) => {
     new: true,
   });
 
+  const {
+    orderId,
+    itemDescription,
+    customerName,
+    phoneNumber,
+    service,
+    estimate,
+    notes,
+    timeDroppedOff,
+    timeEstimatedPickup,
+    employeeName,
+    rushOrder,
+  } = order;
+
   const [redirect, setRedirect] = useState(false);
 
   useEffect(() => {
+    console.log("running");
     if (props.newOrderId) {
-
       setOrder({ ...order, orderId: props.newOrderId() });
     }
 
     if (props.orderToUpdate) {
-
       setOrder(props.orderToUpdate);
 
       //fix to get my mocked data to work with moment.js
       if (typeof props.orderToUpdate.timeDroppedOff === "string") {
-
         setOrder({
           ...props.orderToUpdate,
 
@@ -74,20 +86,6 @@ const Form = (props) => {
       setRedirect(true);
     }
   };
-
-  const {
-    orderId,
-    itemDescription,
-    customerName,
-    phoneNumber,
-    service,
-    estimate,
-    notes,
-    timeDroppedOff,
-    timeEstimatedPickup,
-    employeeName,
-    rushOrder,
-  } = order;
 
   if (redirect) return <Redirect to="/" />;
 
