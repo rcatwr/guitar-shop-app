@@ -39,33 +39,46 @@ class App extends React.Component {
     this.setState({ orders });
   }
 
+  // this callback handles two different form submissions
+  // 1) if an order is a 'newOrder'
+  // 2) if the order is being updated 'isUpdate'
   formSubmitted = (newOrder, isUpdate) => {
     //callback spreads in the new order in Form
-    console.log('NEW ORDER:', newOrder, 'order id:', newOrder.orderId)
-    if(isUpdate){
+    console.log("NEW ORDER:", newOrder, "order id:", newOrder.orderId);
+    if (isUpdate) {
       // filter the order out
-      const updatedList = this.state.orders.filter(order => order.orderId !== newOrder.orderId)
-      console.log('updated:' , updatedList)
-      this.setState({orders: [...updatedList, newOrder]});
-    } else{
+      const updatedList = this.state.orders.filter(
+        (order) => order.orderId !== newOrder.orderId
+      );
+      console.log("updated:", updatedList);
+      // ...and pop it back in!
+      this.setState({ orders: [...updatedList, newOrder] });
+    } else {
+      // add the new order in
       this.setState({ orders: [...this.state.orders, newOrder] });
-
     }
-
   };
 
   orderStatusUpdate = (id, trigger) => {
+    // this handles the 'delete' button
     if (trigger === "deleted" && !this.state.confirmDeleteModalShow) {
       return this.openConfirmDeleteModal(id);
     }
     // open the order update modal in App if update button is selected in orderCard
     // passes trigger and order id
 
+    // this handles the update sequence
     if (trigger === "updateOrder") {
       this.updateOrderModal(true);
       this.updateOrderFormDisplay(id);
       // use this for opening the order update modal
     }
+
+    // this map method goes throught the orders object in state
+    // uses a ternary operator
+    // does the id of the order match the order id of the order
+    // clicked on the interface?
+    // it's dynamic, so trigger could be 'completed','archived', 'deleted'
 
     const updatedOrders = this.state.orders.map((order) =>
       order.orderId === id ? { ...order, [trigger]: true } : order
@@ -77,39 +90,32 @@ class App extends React.Component {
     });
   };
 
-  openConfirmDeleteModal = (id) => {
-    this.setState({
-      orderConfirmDelete: this.state.orders
-        .filter((order) => order.orderId === id)
-        .pop(),
-    });
+  // this method grabs the order from state to
+  // display on the modal and prepare the
+  // user to delete optionally
 
+  openConfirmDeleteModal = (id) => {
+    // get the order to delete
+    this.setState({
+      orderConfirmDelete: this.state.orders.find((o) => o.orderId === id),
+    });
+    // show the modal
     this.setState({ confirmDeleteModalShow: true });
   };
 
+  // this just triggers the modal display
   updateOrderModal = (bool) => {
-    this.setState({ updateOrderModalShow: bool ? true : false }) ;
+    this.setState({ updateOrderModalShow: bool ? true : false });
   };
-
-  
 
   updateOrderFormDisplay = (id) => {
-    //find() callback
-    console.log("this id:", id);
-
-    function isOrderId(order) {
-      return order.orderId === id;
-    }
-    // sorts through and finds the object in orders
-
-    const orderToUpdate = this.state.orders.find(isOrderId);
-    // pass to props
-
-    console.log("order to update", orderToUpdate);
-    //return <Form updateOrderDetails={orderToUpdate} />;
-    this.setState({ orderToUpdate })
+    // sorts through and finds the order we need to update in orders
+    const orderToUpdate = this.state.orders.find((o) => o.orderId === id);
+    // pass this bit of state to props
+    this.setState({ orderToUpdate });
   };
 
+  // this gives us the order number for the next order
   newOrderId = () => {
     return Math.max(...this.state.orders.map((order) => order.orderId)) + 1;
   };
@@ -126,16 +132,21 @@ class App extends React.Component {
     this.setState({ sortDir });
   };
 
-  countCardStatus = (orders) => {
-    const cardDisplayLogic = (o) => ({
-      current: !o.deleted && !o.completed,
-      completed: o.completed && !o.deleted && !o.archived,
-      archived: o.archived && !o.deleted,
-    });
+  cardDisplayLogic = (o) => ({
+    current: !o.deleted && !o.completed,
+    completed: o.completed && !o.deleted && !o.archived,
+    archived: o.archived && !o.deleted,
+  });
 
+  // this is strictly for the nav bar component!!
+  // handles the logic for making the little numbers appear
+  // on the tabs
+  // returns an object
+
+  countCardStatus = (orders) => {
     const ordersCount = (stat) =>
       orders.filter((order) => {
-        return cardDisplayLogic(order)[stat] ? order : null;
+        return this.cardDisplayLogic(order)[stat] ? order : null;
       }).length;
 
     return {
@@ -146,17 +157,11 @@ class App extends React.Component {
   };
 
   showCardsLogic = (status, orders) => {
-    const cardDisplay = (o) => ({
-      current: !o.deleted && !o.completed,
-      completed: o.completed && !o.deleted && !o.archived,
-      archived: o.archived && !o.deleted,
-    });
-
-    let orderByval = this.state.sortBy;
+    let orderByVal = this.state.sortBy;
 
     const sortedRecords = _.sortBy(orders, [
       function (o) {
-        return o[orderByval];
+        return o[orderByVal];
       },
     ]);
 
@@ -169,11 +174,11 @@ class App extends React.Component {
     );
 
     const ordersEmptyBin = textSearchedRecords.filter((order) => {
-      return cardDisplay(order)[status] ? order : null;
+      return this.cardDisplayLogic(order)[status] ? order : null;
     });
 
     const listOrders = textSearchedRecords.map((order, i) => {
-      return cardDisplay(order)[status] ? (
+      return this.cardDisplayLogic(order)[status] ? (
         <OrderCard
           key={i}
           order={order}
@@ -195,9 +200,14 @@ class App extends React.Component {
   };
 
   render() {
-
     const toggleUpdateOrderModalDisplay = this.state.updateOrderModalShow ? (
-      <Modal><Form orderToUpdate={this.state.orderToUpdate} updateOrderModal ={this.updateOrderModal} formSubmitted={this.formSubmitted} /></Modal>
+      <Modal>
+        <Form
+          orderToUpdate={this.state.orderToUpdate}
+          updateOrderModal={this.updateOrderModal}
+          formSubmitted={this.formSubmitted}
+        />
+      </Modal>
     ) : null;
 
     const toggleDeleteConfirmModal = this.state.confirmDeleteModalShow ? (
@@ -248,12 +258,12 @@ class App extends React.Component {
         <Main showSearchOptions={this.state.showSearchOptions}>
           <BrowserRouter>
             <Nav orderStatus={this.countCardStatus(this.state.orders)} />
-           <SearchTool
+            <SearchTool
               sortCardOrder={this.sortCardOrder}
               sortCardDir={this.sortCardDir}
               searchByText={this.searchByText}
             />
-           
+
             <Switch>
               <Route exact path="/">
                 <CurrentOrders>

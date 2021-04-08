@@ -1,14 +1,20 @@
-import React from "react";
+import { useState } from "react";
 
-const SearchInput = ({searchByText}) => {
+const SearchInput = ({ searchByText }) => {
+  const [searchInput, setSearchInput] = useState("");
+
   return (
     <div className="control">
-          <input 
-          className="input" 
-          type="text" 
-          placeholder="Search Orders By" 
-          onChange={(e) => searchByText(e.target.value)}
-          />
+      <input
+        value={searchInput}
+        className="input"
+        type="text"
+        placeholder="Search Orders By"
+        onChange={(e) => {
+          setSearchInput(e.target.value.replace(/[^a-zA-Z\s]/, ""));
+          searchByText(searchInput);
+        }}
+      />
     </div>
   );
 };
