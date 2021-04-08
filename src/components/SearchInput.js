@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 
 const SearchInput = ({ searchByText }) => {
   const [searchInput, setSearchInput] = useState("");
+
   useEffect(() => {
     searchByText(searchInput);
-  }, [searchInput]);
+  }, [searchInput, searchByText]);
   return (
     <div className="control">
       <input
