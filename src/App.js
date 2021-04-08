@@ -7,7 +7,7 @@ import CurrentOrders from "./components/CurrentOrders";
 import CompletedOrders from "./components/CompletedOrders";
 import ArchivedOrders from "./components/ArchivedOrders";
 import NewOrder from "./components/NewOrder";
-import Modal from "./components/Modal";
+
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Main from "./components/Main";
@@ -16,21 +16,18 @@ import Nav from "./components/Nav";
 import OrderCard from "./components/OrderCard";
 import Form from "./components/Form";
 import ordersData from "./data/orders.json";
+import UpdateOrderModal from "./components/UpdateOrderModal";
+import DeleteConfirmModal from "./components/DeleteConfirmModal";
 
 const App = () => {
   const [confirmDeleteModalShow, setConfirmDeleteModalShow] = useState(false);
   const [updateOrderModalShow, setUpdateOrderModalShow] = useState(false);
   const [orderConfirmDelete, setOrderConfirmDelete] = useState({});
   const [orderToUpdate, setOrderToUpdate] = useState({});
-  //const [showSearchOptions, setShowSearchOptions] = useState(false);
   const [sortBy, setSortBy] = useState("orderId");
   const [sortDir, setSortDir] = useState("asc");
   const [searchTerm, setSearchTerm] = useState("");
   const [orders, setOrders] = useState([]);
-  // const [cardStatusTotals, useCardStatusTotals] = useState(
-  //   {current: "",
-  //   completed: "",
-  //     archived: "",});
 
   useEffect(() => {
     setOrders(ordersData);
@@ -49,11 +46,9 @@ const App = () => {
       );
       console.log("updated:", updatedList);
       // ...and pop it back in!
-      //this.setState({ orders: [...updatedList, newOrder] });
       setOrders([...updatedList, newOrder]);
     } else {
       // add the new order in
-      // this.setState({ orders: [...this.state.orders, newOrder] });
       setOrders([...orders, newOrder]);
     }
   };
@@ -83,10 +78,6 @@ const App = () => {
       order.orderId === id ? { ...order, [trigger]: true } : order
     );
 
-    //this.setState({
-    // orders: updatedOrders,
-    // confirmDeleteModalShow: false,
-    //});
     setOrders(updatedOrders);
     setConfirmDeleteModalShow(false);
   };
@@ -97,18 +88,13 @@ const App = () => {
 
   const openConfirmDeleteModal = (id) => {
     // get the order to delete
-    // this.setState({
-    //   orderConfirmDelete: this.state.orders.find((o) => o.orderId === id),
-    // });
     setOrderConfirmDelete(orders.find((o) => o.orderId === id));
     // show the modal
-    //this.setState({ confirmDeleteModalShow: true });
     setConfirmDeleteModalShow(true);
   };
 
   // this just triggers the modal display
   const updateOrderModal = (bool) => {
-    //this.setState({ updateOrderModalShow: bool ? true : false });
     setUpdateOrderModalShow(bool | false);
   };
 
@@ -116,7 +102,6 @@ const App = () => {
     // sorts through and finds the order we need to update in orders
     setOrderToUpdate(orders.find((o) => o.orderId === id));
     // pass this bit of state to props
-    // this.setState({ orderToUpdate });
   };
 
   // this gives us the order number for the next order
@@ -125,12 +110,10 @@ const App = () => {
   };
 
   const searchByText = (text) => {
-    // this.setState({ searchTerm: text.toString().toLowerCase().trim() });
     setSearchTerm(text.toLowerCase().trim());
   };
 
   const sortCardOrder = (sortBy) => {
-    //this.setState({ sortBy });
     setSortBy(sortBy);
   };
 
@@ -206,47 +189,19 @@ const App = () => {
   };
 
   const toggleUpdateOrderModalDisplay = updateOrderModalShow ? (
-    <Modal>
-      <Form
-        orderToUpdate={orderToUpdate}
-        updateOrderModal={updateOrderModal}
-        formSubmitted={formSubmitted}
-      />
-    </Modal>
+    <UpdateOrderModal
+      orderToUpdate={orderToUpdate}
+      updateOrderModal={updateOrderModal}
+      formSubmitted={formSubmitted}
+    />
   ) : null;
 
   const toggleDeleteConfirmModal = confirmDeleteModalShow ? (
-    <Modal>
-      {/* put the notification into its own component -- and get it out of the main app */}
-      <div className="notification">
-        <button
-          className="delete"
-          onClick={() => setConfirmDeleteModalShow(false)}
-        ></button>
-        <p className>Are you sure you want to delete: </p>
-        <p className="is-size-4 mb-5">
-          <span className="fredoka">{orderConfirmDelete.itemDescription}</span>
-          <span className="tag is-large is-darker is-link is-pulled-right">
-            # {orderConfirmDelete.orderId}
-          </span>
-        </p>
-        <button
-          id="deleted"
-          onClick={(e) =>
-            orderStatusUpdate(orderConfirmDelete.orderId, e.target.id)
-          }
-          className="button is-danger is-small is-dark"
-        >
-          Delete
-        </button>{" "}
-        <button
-          className="button is-primary is-small is-light"
-          onClick={() => setConfirmDeleteModalShow(false)}
-        >
-          Cancel
-        </button>
-      </div>
-    </Modal>
+    <DeleteConfirmModal
+      orderConfirmDelete={orderConfirmDelete}
+      orderStatusUpdate={orderStatusUpdate}
+      setConfirmDeleteModalShow={setConfirmDeleteModalShow}
+    />
   ) : null;
 
   return (
@@ -266,25 +221,17 @@ const App = () => {
 
           <Switch>
             <Route exact path="/">
-              <CurrentOrders>
-                {/* <SearchTool /> */}
-
-                {showCardsLogic("current", orders)}
-              </CurrentOrders>
+              <CurrentOrders>{showCardsLogic("current", orders)}</CurrentOrders>
             </Route>
 
             <Route path="/completed">
               <CompletedOrders>
-                {/* <SearchTool /> */}
-
                 {showCardsLogic("completed", orders)}
               </CompletedOrders>
             </Route>
 
             <Route path="/archived">
               <ArchivedOrders>
-                {/* <SearchTool /> */}
-
                 {showCardsLogic("archived", orders)}
               </ArchivedOrders>
             </Route>
