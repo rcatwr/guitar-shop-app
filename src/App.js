@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "./css/App.css";
 import "../node_modules/font-awesome/css/font-awesome.min.css";
@@ -15,62 +15,61 @@ import SearchTool from "./components/SearchTool";
 import Nav from "./components/Nav";
 import OrderCard from "./components/OrderCard";
 import Form from "./components/Form";
-import orders from "./data/orders.json";
+import ordersData from "./data/orders.json";
 
-class App extends React.Component {
-  state = {
-    confirmDeleteModalShow: false,
-    updateOrderModalShow: false,
-    orderConfirmDelete: {},
-    orderToUpdate: {},
-    showSearchOptions: false,
-    sortBy: "orderId",
-    sortDir: "asc",
-    searchTerm: "",
-    orders: [],
-    cardStatusTotals: {
-      current: "",
-      completed: "",
-      archived: "",
-    },
-  };
+const App = () => {
+  const [confirmDeleteModalShow, setConfirmDeleteModalShow] = useState(false);
+  const [updateOrderModalShow, setUpdateOrderModalShow] = useState(false);
+  const [orderConfirmDelete, setOrderConfirmDelete] = useState({});
+  const [orderToUpdate, setOrderToUpdate] = useState({});
+  //const [showSearchOptions, setShowSearchOptions] = useState(false);
+  const [sortBy, setSortBy] = useState("orderId");
+  const [sortDir, setSortDir] = useState("asc");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [orders, setOrders] = useState([]);
+  // const [cardStatusTotals, useCardStatusTotals] = useState(
+  //   {current: "",
+  //   completed: "",
+  //     archived: "",});
 
-  componentDidMount() {
-    this.setState({ orders });
-  }
+  useEffect(() => {
+    setOrders(ordersData);
+  }, []);
 
   // this callback handles two different form submissions
   // 1) if an order is a 'newOrder'
   // 2) if the order is being updated 'isUpdate'
-  formSubmitted = (newOrder, isUpdate) => {
+  const formSubmitted = (newOrder, isUpdate) => {
     //callback spreads in the new order in Form
     console.log("NEW ORDER:", newOrder, "order id:", newOrder.orderId);
     if (isUpdate) {
       // filter the order out
-      const updatedList = this.state.orders.filter(
+      const updatedList = orders.filter(
         (order) => order.orderId !== newOrder.orderId
       );
       console.log("updated:", updatedList);
       // ...and pop it back in!
-      this.setState({ orders: [...updatedList, newOrder] });
+      //this.setState({ orders: [...updatedList, newOrder] });
+      setOrders([...updatedList, newOrder]);
     } else {
       // add the new order in
-      this.setState({ orders: [...this.state.orders, newOrder] });
+      // this.setState({ orders: [...this.state.orders, newOrder] });
+      setOrders([...orders, newOrder]);
     }
   };
 
-  orderStatusUpdate = (id, trigger) => {
+  const orderStatusUpdate = (id, trigger) => {
     // this handles the 'delete' button
-    if (trigger === "deleted" && !this.state.confirmDeleteModalShow) {
-      return this.openConfirmDeleteModal(id);
+    if (trigger === "deleted" && !confirmDeleteModalShow) {
+      return openConfirmDeleteModal(id);
     }
     // open the order update modal in App if update button is selected in orderCard
     // passes trigger and order id
 
     // this handles the update sequence
     if (trigger === "updateOrder") {
-      this.updateOrderModal(true);
-      this.updateOrderFormDisplay(id);
+      updateOrderModal(true);
+      updateOrderFormDisplay(id);
       // use this for opening the order update modal
     }
 
@@ -80,59 +79,66 @@ class App extends React.Component {
     // clicked on the interface?
     // it's dynamic, so trigger could be 'completed','archived', 'deleted'
 
-    const updatedOrders = this.state.orders.map((order) =>
+    const updatedOrders = orders.map((order) =>
       order.orderId === id ? { ...order, [trigger]: true } : order
     );
 
-    this.setState({
-      orders: updatedOrders,
-      confirmDeleteModalShow: false,
-    });
+    //this.setState({
+    // orders: updatedOrders,
+    // confirmDeleteModalShow: false,
+    //});
+    setOrders(updatedOrders);
+    setConfirmDeleteModalShow(false);
   };
 
   // this method grabs the order from state to
   // display on the modal and prepare the
   // user to delete optionally
 
-  openConfirmDeleteModal = (id) => {
+  const openConfirmDeleteModal = (id) => {
     // get the order to delete
-    this.setState({
-      orderConfirmDelete: this.state.orders.find((o) => o.orderId === id),
-    });
+    // this.setState({
+    //   orderConfirmDelete: this.state.orders.find((o) => o.orderId === id),
+    // });
+    setOrderConfirmDelete(orders.find((o) => o.orderId === id));
     // show the modal
-    this.setState({ confirmDeleteModalShow: true });
+    //this.setState({ confirmDeleteModalShow: true });
+    setConfirmDeleteModalShow(true);
   };
 
   // this just triggers the modal display
-  updateOrderModal = (bool) => {
-    this.setState({ updateOrderModalShow: bool ? true : false });
+  const updateOrderModal = (bool) => {
+    //this.setState({ updateOrderModalShow: bool ? true : false });
+    setUpdateOrderModalShow(bool | false);
   };
 
-  updateOrderFormDisplay = (id) => {
+  const updateOrderFormDisplay = (id) => {
     // sorts through and finds the order we need to update in orders
-    const orderToUpdate = this.state.orders.find((o) => o.orderId === id);
+    setOrderToUpdate(orders.find((o) => o.orderId === id));
     // pass this bit of state to props
-    this.setState({ orderToUpdate });
+    // this.setState({ orderToUpdate });
   };
 
   // this gives us the order number for the next order
-  newOrderId = () => {
-    return Math.max(...this.state.orders.map((order) => order.orderId)) + 1;
+  const newOrderId = () => {
+    return Math.max(...orders.map((order) => order.orderId)) + 1;
   };
 
-  searchByText = (text) => {
-    this.setState({ searchTerm: text.toString().toLowerCase().trim() });
+  const searchByText = (text) => {
+    // this.setState({ searchTerm: text.toString().toLowerCase().trim() });
+    setSearchTerm(text.toLowerCase().trim());
   };
 
-  sortCardOrder = (sortBy) => {
-    this.setState({ sortBy });
+  const sortCardOrder = (sortBy) => {
+    //this.setState({ sortBy });
+    setSortBy(sortBy);
   };
 
-  sortCardDir = (sortDir) => {
-    this.setState({ sortDir });
+  const sortCardDir = (sortDir) => {
+    setSortDir(sortDir);
   };
 
-  cardDisplayLogic = (o) => ({
+  const cardDisplayLogic = (o) => ({
     current: !o.deleted && !o.completed,
     completed: o.completed && !o.deleted && !o.archived,
     archived: o.archived && !o.deleted,
@@ -143,10 +149,10 @@ class App extends React.Component {
   // on the tabs
   // returns an object
 
-  countCardStatus = (orders) => {
+  const countCardStatus = (orders) => {
     const ordersCount = (stat) =>
       orders.filter((order) => {
-        return this.cardDisplayLogic(order)[stat] ? order : null;
+        return cardDisplayLogic(order)[stat] ? order : null;
       }).length;
 
     return {
@@ -156,8 +162,8 @@ class App extends React.Component {
     };
   };
 
-  showCardsLogic = (status, orders) => {
-    let orderByVal = this.state.sortBy;
+  const showCardsLogic = (status, orders) => {
+    let orderByVal = sortBy;
 
     const sortedRecords = _.sortBy(orders, [
       function (o) {
@@ -165,24 +171,24 @@ class App extends React.Component {
       },
     ]);
 
-    if (this.state.sortDir === "desc") sortedRecords.reverse();
+    if (sortDir === "desc") sortedRecords.reverse();
 
-    let re = new RegExp(`${this.state.searchTerm}`, "gi");
+    let re = new RegExp(`${searchTerm}`, "gi");
 
     let textSearchedRecords = sortedRecords.filter((i) =>
-      re.test(i[this.state.sortBy]) ? i : null
+      re.test(i[sortBy]) ? i : null
     );
 
     const ordersEmptyBin = textSearchedRecords.filter((order) => {
-      return this.cardDisplayLogic(order)[status] ? order : null;
+      return cardDisplayLogic(order)[status] ? order : null;
     });
 
     const listOrders = textSearchedRecords.map((order, i) => {
-      return this.cardDisplayLogic(order)[status] ? (
+      return cardDisplayLogic(order)[status] ? (
         <OrderCard
           key={i}
           order={order}
-          orderStatusUpdate={this.orderStatusUpdate}
+          orderStatusUpdate={orderStatusUpdate}
         />
       ) : null;
     });
@@ -199,111 +205,101 @@ class App extends React.Component {
     );
   };
 
-  render() {
-    const toggleUpdateOrderModalDisplay = this.state.updateOrderModalShow ? (
-      <Modal>
-        <Form
-          orderToUpdate={this.state.orderToUpdate}
-          updateOrderModal={this.updateOrderModal}
-          formSubmitted={this.formSubmitted}
-        />
-      </Modal>
-    ) : null;
+  const toggleUpdateOrderModalDisplay = updateOrderModalShow ? (
+    <Modal>
+      <Form
+        orderToUpdate={orderToUpdate}
+        updateOrderModal={updateOrderModal}
+        formSubmitted={formSubmitted}
+      />
+    </Modal>
+  ) : null;
 
-    const toggleDeleteConfirmModal = this.state.confirmDeleteModalShow ? (
-      <Modal>
-        {/* put the notification into its own component -- and get it out of the main app */}
-        <div className="notification">
-          <button
-            className="delete"
-            onClick={() => this.setState({ confirmDeleteModalShow: false })}
-          ></button>
-          <p className>Are you sure you want to delete: </p>
-          <p className="is-size-4 mb-5">
-            <span className="fredoka">
-              {this.state.orderConfirmDelete.itemDescription}
-            </span>
-            <span className="tag is-large is-darker is-link is-pulled-right">
-              # {this.state.orderConfirmDelete.orderId}
-            </span>
-          </p>
-          <button
-            id="deleted"
-            onClick={(e) =>
-              this.orderStatusUpdate(
-                this.state.orderConfirmDelete.orderId,
-                e.target.id
-              )
-            }
-            className="button is-danger is-small is-dark"
-          >
-            Delete
-          </button>{" "}
-          <button
-            className="button is-primary is-small is-light"
-            onClick={() => this.setState({ confirmDeleteModalShow: false })}
-          >
-            Cancel
-          </button>
-        </div>
-      </Modal>
-    ) : null;
+  const toggleDeleteConfirmModal = confirmDeleteModalShow ? (
+    <Modal>
+      {/* put the notification into its own component -- and get it out of the main app */}
+      <div className="notification">
+        <button
+          className="delete"
+          onClick={() => setConfirmDeleteModalShow(false)}
+        ></button>
+        <p className>Are you sure you want to delete: </p>
+        <p className="is-size-4 mb-5">
+          <span className="fredoka">{orderConfirmDelete.itemDescription}</span>
+          <span className="tag is-large is-darker is-link is-pulled-right">
+            # {orderConfirmDelete.orderId}
+          </span>
+        </p>
+        <button
+          id="deleted"
+          onClick={(e) =>
+            orderStatusUpdate(orderConfirmDelete.orderId, e.target.id)
+          }
+          className="button is-danger is-small is-dark"
+        >
+          Delete
+        </button>{" "}
+        <button
+          className="button is-primary is-small is-light"
+          onClick={() => setConfirmDeleteModalShow(false)}
+        >
+          Cancel
+        </button>
+      </div>
+    </Modal>
+  ) : null;
 
-    return (
-      <>
-        {toggleDeleteConfirmModal}
-        {toggleUpdateOrderModalDisplay}
-        <Header />
+  return (
+    <>
+      {toggleDeleteConfirmModal}
+      {toggleUpdateOrderModalDisplay}
+      <Header />
 
-        <Main showSearchOptions={this.state.showSearchOptions}>
-          <BrowserRouter>
-            <Nav orderStatus={this.countCardStatus(this.state.orders)} />
-            <SearchTool
-              sortCardOrder={this.sortCardOrder}
-              sortCardDir={this.sortCardDir}
-              searchByText={this.searchByText}
-            />
+      <Main>
+        <BrowserRouter>
+          <Nav orderStatus={countCardStatus(orders)} />
+          <SearchTool
+            sortCardOrder={sortCardOrder}
+            sortCardDir={sortCardDir}
+            searchByText={searchByText}
+          />
 
-            <Switch>
-              <Route exact path="/">
-                <CurrentOrders>
-                  {/* <SearchTool /> */}
+          <Switch>
+            <Route exact path="/">
+              <CurrentOrders>
+                {/* <SearchTool /> */}
 
-                  {this.showCardsLogic("current", this.state.orders)}
-                </CurrentOrders>
-              </Route>
+                {showCardsLogic("current", orders)}
+              </CurrentOrders>
+            </Route>
 
-              <Route path="/completed">
-                <CompletedOrders>
-                  {/* <SearchTool /> */}
+            <Route path="/completed">
+              <CompletedOrders>
+                {/* <SearchTool /> */}
 
-                  {this.showCardsLogic("completed", this.state.orders)}
-                </CompletedOrders>
-              </Route>
+                {showCardsLogic("completed", orders)}
+              </CompletedOrders>
+            </Route>
 
-              <Route path="/archived">
-                <ArchivedOrders>
-                  {/* <SearchTool /> */}
+            <Route path="/archived">
+              <ArchivedOrders>
+                {/* <SearchTool /> */}
 
-                  {this.showCardsLogic("archived", this.state.orders)}
-                </ArchivedOrders>
-              </Route>
+                {showCardsLogic("archived", orders)}
+              </ArchivedOrders>
+            </Route>
 
-              <Route path="/new">
-                <NewOrder>
-                  <Form
-                    formSubmitted={this.formSubmitted}
-                    newOrderId={this.newOrderId}
-                  />
-                </NewOrder>
-              </Route>
-            </Switch>
-          </BrowserRouter>
-        </Main>
-        <Footer />
-      </>
-    );
-  }
-}
+            <Route path="/new">
+              <NewOrder>
+                <Form formSubmitted={formSubmitted} newOrderId={newOrderId} />
+              </NewOrder>
+            </Route>
+          </Switch>
+        </BrowserRouter>
+      </Main>
+      <Footer />
+    </>
+  );
+};
 
 export default App;
