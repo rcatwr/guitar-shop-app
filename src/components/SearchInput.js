@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const SearchInput = ({ searchByText }) => {
   const [searchInput, setSearchInput] = useState("");
-
+  useEffect(() => {
+    searchByText(searchInput);
+  }, [searchInput]);
   return (
     <div className="control">
       <input
@@ -11,8 +13,7 @@ const SearchInput = ({ searchByText }) => {
         type="text"
         placeholder="Search Orders By"
         onChange={(e) => {
-          setSearchInput(e.target.value.replace(/[^a-zA-Z\s]/, ""));
-          searchByText(searchInput);
+          setSearchInput(e.target.value.replace(/[^a-zA-Z0-9\s]/, ""));
         }}
       />
     </div>
