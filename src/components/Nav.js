@@ -2,9 +2,6 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
 const Nav = (props) => {
-  console.log(props);
-  const handleClick = () => props.openNewOrderModal();
-
   const { pathname } = useLocation();
 
   console.log(props.orderStatus);
