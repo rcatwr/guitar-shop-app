@@ -15,7 +15,8 @@ import SearchTool from "./components/SearchTool";
 import Nav from "./components/Nav";
 import OrderCard from "./components/OrderCard";
 import Form from "./components/Form";
-import ordersData from "./data/orders.json";
+//import ordersData from "./data/orders.json";
+import { useSelector } from "react-redux";
 import UpdateOrderModal from "./components/UpdateOrderModal";
 import DeleteConfirmModal from "./components/DeleteConfirmModal";
 
@@ -27,31 +28,37 @@ const App = () => {
   const [sortBy, setSortBy] = useState("orderId");
   const [sortDir, setSortDir] = useState("asc");
   const [searchTerm, setSearchTerm] = useState("");
-  const [orders, setOrders] = useState([]);
+  // need to get rid of this and use the redux store
+  const [ordersLocalState, setOrders] = useState([]);
+
+  //redux store
+  const orders = useSelector((state) => state.orders);
+  // make selectors here for all kindsa stuff
 
   useEffect(() => {
-    setOrders(ordersData);
+    setOrders(orders);
   }, []);
 
   // this callback handles two different form submissions
   // 1) if an order is a 'newOrder'
   // 2) if the order is being updated 'isUpdate'
-  const formSubmitted = (newOrder, isUpdate) => {
-    //callback spreads in the new order in Form
-    console.log("NEW ORDER:", newOrder, "order id:", newOrder.orderId);
-    if (isUpdate) {
-      // filter the order out
-      const updatedList = orders.filter(
-        (order) => order.orderId !== newOrder.orderId
-      );
-      console.log("updated:", updatedList);
-      // ...and pop it back in!
-      setOrders([...updatedList, newOrder]);
-    } else {
-      // add the new order in
-      setOrders([...orders, newOrder]);
-    }
-  };
+
+  // const formSubmitted = (newOrder, isUpdate) => {
+  //   //callback spreads in the new order in Form
+
+  //   if (isUpdate) {
+  //     // filter the order out
+  //     const updatedList = orders.filter(
+  //       (order) => order.orderId !== newOrder.orderId
+  //     );
+
+  //     // ...and pop it back in!
+  //     setOrders([...updatedList, newOrder]);
+  //   } else {
+  //     // add the new order in
+  //     setOrders([...orders, newOrder]);
+  //   }
+  // };
 
   const orderStatusUpdate = (id, trigger) => {
     // this handles the 'delete' button
@@ -192,7 +199,7 @@ const App = () => {
     <UpdateOrderModal
       orderToUpdate={orderToUpdate}
       updateOrderModal={updateOrderModal}
-      formSubmitted={formSubmitted}
+      // formSubmitted={formSubmitted}
     />
   ) : null;
 
@@ -238,7 +245,10 @@ const App = () => {
 
             <Route path="/new">
               <NewOrder>
-                <Form formSubmitted={formSubmitted} newOrderId={newOrderId} />
+                <Form
+                  // formSubmitted={formSubmitted}
+                  newOrderId={newOrderId}
+                />
               </NewOrder>
             </Route>
           </Switch>

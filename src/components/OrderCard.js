@@ -28,16 +28,14 @@ const OrderCard = ({ order, orderStatusUpdate }) => {
   return (
     <div className="container">
       <div className="box content">
-
-          <span className="tag is-large has-background-grey has-text-light is-pulled-right">
-            #{orderId}    </span>      
-         
+        <span className="tag is-large has-background-grey has-text-light is-pulled-right">
+          #{orderId}{" "}
+        </span>
 
         <p className="is-size-4">
-         <span className="fredoka">{itemDescription} </span>
-
+          <span className="fredoka">{itemDescription} </span>
         </p>
-    
+
         <p>
           <strong>
             <i className="fas fa-user"></i>
@@ -52,8 +50,15 @@ const OrderCard = ({ order, orderStatusUpdate }) => {
         </p>
         <p>
           <strong>Service(s):</strong>{" "}
-          <span className="tag is-info">{service}</span>{rushOrder ? (
-             <span style ={{marginLeft:'3px'}} className="tag is-danger has-text-danger-light"> RUSH! </span>
+          <span className="tag is-info">{service}</span>
+          {rushOrder ? (
+            <span
+              style={{ marginLeft: "3px" }}
+              className="tag is-danger has-text-danger-light"
+            >
+              {" "}
+              RUSH!{" "}
+            </span>
           ) : null}
         </p>
         <p>
@@ -88,12 +93,11 @@ const OrderCard = ({ order, orderStatusUpdate }) => {
           </button>
         ) : null}
 
-        <button 
-          id="updateOrder" 
+        <button
+          id="updateOrder"
           className="button is-primary is-light is-small"
           onClick={handleClick}
-          
-          >
+        >
           Update Info
         </button>
 

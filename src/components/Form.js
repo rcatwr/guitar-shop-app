@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import serviceList from "../data/serviceList.json";
 import employeeList from "../data/employeeList.json";
 import { Redirect } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { createOrder, updateOrder } from "../redux/orderSlice";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -23,6 +25,8 @@ const Form = (props) => {
     deleted: false,
     new: true,
   });
+
+  const dispatch = useDispatch();
 
   const {
     orderId,
@@ -74,15 +78,20 @@ const Form = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    //set new to false on submit!
+    // set new to false on submit!
 
+    // update local state
     setOrder({ ...order, new: false });
 
     if (props.updateOrderModal) {
-      props.formSubmitted(order, true);
+      dispatch(updateOrder({ order }));
+      //props.formSubmitted(order, true);
+      // closes the modal
       props.updateOrderModal(false);
     } else {
-      props.formSubmitted(order, false);
+      dispatch(createOrder({ order }));
+      // instead of callback, lets send to dispatch
+      // props.formSubmitted(order, false);
       setRedirect(true);
     }
   };
