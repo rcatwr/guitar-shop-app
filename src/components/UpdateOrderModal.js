@@ -10,7 +10,7 @@ const UpdateOrderModal = ({
     <Modal>
       <Form
         orderToUpdate={orderToUpdate}
-        updateOrderModal={updateOrderModal}
+        // updateOrderModal={updateOrderModal}
         formSubmitted={formSubmitted}
       />
     </Modal>

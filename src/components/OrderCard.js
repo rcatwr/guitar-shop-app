@@ -1,4 +1,6 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { toggleUpdateOrderModal } from "../redux/modalDisplaySlice";
 import moment from "moment";
 
 const OrderCard = ({ order, orderStatusUpdate }) => {
@@ -18,7 +20,10 @@ const OrderCard = ({ order, orderStatusUpdate }) => {
     archived,
   } = order;
 
+  const dispatch = useDispatch();
+
   const handleClick = (e) => {
+    dispatch(toggleUpdateOrderModal());
     // send 'updateOrder' -- the id to the main App
     orderStatusUpdate(orderId, e.target.id);
   };

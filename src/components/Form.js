@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import serviceList from "../data/serviceList.json";
 import employeeList from "../data/employeeList.json";
 import { Redirect } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createOrder, updateOrder } from "../redux/orderSlice";
+import { toggleUpdateOrderModal } from "../redux/modalDisplaySlice";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -27,6 +28,10 @@ const Form = (props) => {
   });
 
   const dispatch = useDispatch();
+
+  const updateOrderModalDisplay = useSelector(
+    (state) => state.modals.updateOrderModalShow
+  );
 
   const {
     orderId,
@@ -83,11 +88,12 @@ const Form = (props) => {
     // update local state
     setOrder({ ...order, new: false });
 
-    if (props.updateOrderModal) {
+    if (updateOrderModalDisplay) {
       dispatch(updateOrder({ order }));
       //props.formSubmitted(order, true);
       // closes the modal
-      props.updateOrderModal(false);
+      // props.updateOrderModal(false);
+      dispatch(toggleUpdateOrderModal());
     } else {
       dispatch(createOrder({ order }));
       // instead of callback, lets send to dispatch
@@ -296,7 +302,7 @@ const Form = (props) => {
                   if (order.new) {
                     setRedirect(true);
                   } else {
-                    props.updateOrderModal(false);
+                    dispatch(toggleUpdateOrderModal());
                   }
                 }}
               >

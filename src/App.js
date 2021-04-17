@@ -33,6 +33,9 @@ const App = () => {
 
   //redux store
   const orders = useSelector((state) => state.orders);
+  const updateOrderModalDisplay = useSelector(
+    (state) => state.modals.updateOrderModalShow
+  );
   // make selectors here for all kindsa stuff
 
   useEffect(() => {
@@ -44,7 +47,7 @@ const App = () => {
   // 2) if the order is being updated 'isUpdate'
 
   // const formSubmitted = (newOrder, isUpdate) => {
-  //   //callback spreads in the new order in Form
+  //    callback spreads in the new order in Form
 
   //   if (isUpdate) {
   //     // filter the order out
@@ -70,7 +73,7 @@ const App = () => {
 
     // this handles the update sequence
     if (trigger === "updateOrder") {
-      updateOrderModal(true);
+      // updateOrderModal(true);
       updateOrderFormDisplay(id);
       // use this for opening the order update modal
     }
@@ -100,11 +103,13 @@ const App = () => {
     setConfirmDeleteModalShow(true);
   };
 
+  // put this into a redux slice!!
   // this just triggers the modal display
   const updateOrderModal = (bool) => {
     setUpdateOrderModalShow(bool | false);
   };
 
+  //selector!!!
   const updateOrderFormDisplay = (id) => {
     // sorts through and finds the order we need to update in orders
     setOrderToUpdate(orders.find((o) => o.orderId === id));
@@ -195,10 +200,10 @@ const App = () => {
     );
   };
 
-  const toggleUpdateOrderModalDisplay = updateOrderModalShow ? (
+  const toggleUpdateOrderModalDisplay = updateOrderModalDisplay ? (
     <UpdateOrderModal
       orderToUpdate={orderToUpdate}
-      updateOrderModal={updateOrderModal}
+      //updateOrderModal={updateOrderModal}
       // formSubmitted={formSubmitted}
     />
   ) : null;
