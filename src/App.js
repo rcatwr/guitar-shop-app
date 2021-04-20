@@ -77,26 +77,22 @@ const App = () => {
     // }
     // open the order update modal in App if update button is selected in orderCard
     // passes trigger and order id
-
     // this handles the update sequence
-    if (trigger === "updateOrder") {
-      // updateOrderModal(true);
-      updateOrderFormDisplay(id);
-      // use this for opening the order update modal
-    }
-
+    //if (trigger === "updateOrder") {
+    // updateOrderModal(true);
+    // updateOrderFormDisplay(id);
+    // use this for opening the order update modal
+    // }
     // this map method goes throught the orders object in state
     // uses a ternary operator
     // does the id of the order match the order id of the order
     // clicked on the interface?
     // it's dynamic, so trigger could be 'completed','archived', 'deleted'
-
-    const updatedOrders = orders.map((order) =>
-      order.orderId === id ? { ...order, [trigger]: true } : order
-    );
-
-    setOrders(updatedOrders);
-    setConfirmDeleteModalShow(false);
+    //const updatedOrders = orders.map((order) =>
+    // order.orderId === id ? { ...order, [trigger]: true } : order
+    // );
+    // setOrders(updatedOrders);
+    // setConfirmDeleteModalShow(false);
   };
 
   // this method grabs the order from state to
@@ -190,7 +186,7 @@ const App = () => {
         <OrderCard
           key={i}
           order={order}
-          orderStatusUpdate={orderStatusUpdate}
+          // orderStatusUpdate={orderStatusUpdate}
         />
       ) : null;
     });

@@ -4,10 +4,10 @@ import {
   toggleUpdateOrderModal,
   toggleDeleteOrderModal,
 } from "../redux/modalDisplaySlice";
+import { archiveOrder, completeOrder } from "../redux/orderSlice";
 import moment from "moment";
-import { updateOrder } from "../redux/orderSlice";
 
-const OrderCard = ({ order, orderStatusUpdate }) => {
+const OrderCard = ({ order }) => {
   const {
     orderId,
     itemDescription,
@@ -29,11 +29,16 @@ const OrderCard = ({ order, orderStatusUpdate }) => {
   const handleClick = (e) => {
     if (e.target.id === "updateOrder") dispatch(toggleUpdateOrderModal(order));
     if (e.target.id === "deleted") dispatch(toggleDeleteOrderModal(order));
+    if (e.target.id === "status" && completed) {
+      dispatch(archiveOrder(orderId));
+    } else {
+      dispatch(completeOrder(orderId));
+    }
     // send 'updateOrder' -- the id to the main App
-    orderStatusUpdate(orderId, e.target.id);
+    // orderStatusUpdate(orderId, e.target.id);
   };
 
-  const orderStatus = completed ? "archive" : "complete";
+  //const orderStatus = completed ? "archive" : "complete";
 
   return (
     <div className="container">
@@ -92,14 +97,13 @@ const OrderCard = ({ order, orderStatusUpdate }) => {
 
         {!archived ? (
           <button
-            id={`${orderStatus}d`}
+            id="status"
             onClick={handleClick}
             className={`button is-${
-              orderStatus === "complete" ? "success" : "warning"
+              !completed ? "success" : "warning"
             } is-dark is-small`}
           >
-            {orderStatus.charAt(0).toUpperCase()}
-            {orderStatus.slice(1)}
+            {!completed ? "Complete" : "Archive"}
           </button>
         ) : null}
 
