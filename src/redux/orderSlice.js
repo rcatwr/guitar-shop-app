@@ -19,9 +19,18 @@ export const orderSlice = createSlice({
 
       state[index] = order;
     },
+    deleteOrder: (state, action) => {
+      const orderId = action.payload;
+
+      const deletedOrder = state.find((item) => item.orderId === orderId);
+
+      const index = state.indexOf(deletedOrder);
+
+      state.splice(index, 1);
+    },
   },
 });
 
-export const { createOrder, updateOrder } = orderSlice.actions;
+export const { createOrder, updateOrder, deleteOrder } = orderSlice.actions;
 
 export default orderSlice.reducer;

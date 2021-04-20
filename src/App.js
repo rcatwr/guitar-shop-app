@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "./css/App.css";
 import "../node_modules/font-awesome/css/font-awesome.min.css";
@@ -22,7 +22,7 @@ import DeleteConfirmModal from "./components/DeleteConfirmModal";
 
 const App = () => {
   const [confirmDeleteModalShow, setConfirmDeleteModalShow] = useState(false);
-  const [updateOrderModalShow, setUpdateOrderModalShow] = useState(false);
+  // const [updateOrderModalShow, setUpdateOrderModalShow] = useState(false);
   const [orderConfirmDelete, setOrderConfirmDelete] = useState({});
   const [orderToUpdate, setOrderToUpdate] = useState({});
   const [sortBy, setSortBy] = useState("orderId");
@@ -34,13 +34,20 @@ const App = () => {
   //redux store
   const orders = useSelector((state) => state.orders);
   const updateOrderModalDisplay = useSelector(
-    (state) => state.modals.updateOrderModalShow
+    (state) => state.modals.updateOrder.modalShow
   );
+  const deleteOrderModalDisplay = useSelector(
+    (state) => state.modals.deleteOrder.modalShow
+  );
+  const deleteOrderDisplay = useSelector(
+    (state) => state.modals.deleteOrder.order
+  );
+
   // make selectors here for all kindsa stuff
 
-  useEffect(() => {
-    setOrders(orders);
-  }, []);
+  //useEffect(() => {
+  //  setOrders(orders);
+  // }, []);
 
   // this callback handles two different form submissions
   // 1) if an order is a 'newOrder'
@@ -65,9 +72,9 @@ const App = () => {
 
   const orderStatusUpdate = (id, trigger) => {
     // this handles the 'delete' button
-    if (trigger === "deleted" && !confirmDeleteModalShow) {
-      return openConfirmDeleteModal(id);
-    }
+    //if (trigger === "deleted" && !confirmDeleteModalShow) {
+    // return openConfirmDeleteModal(id);
+    // }
     // open the order update modal in App if update button is selected in orderCard
     // passes trigger and order id
 
@@ -96,18 +103,18 @@ const App = () => {
   // display on the modal and prepare the
   // user to delete optionally
 
-  const openConfirmDeleteModal = (id) => {
-    // get the order to delete
-    setOrderConfirmDelete(orders.find((o) => o.orderId === id));
-    // show the modal
-    setConfirmDeleteModalShow(true);
-  };
+  // const openConfirmDeleteModal = (id) => {
+  // get the order to delete
+  // setOrderConfirmDelete(orders.find((o) => o.orderId === id));
+  // show the modal
+  //  setConfirmDeleteModalShow(true);
+  // };
 
   // put this into a redux slice!!
   // this just triggers the modal display
-  const updateOrderModal = (bool) => {
-    setUpdateOrderModalShow(bool | false);
-  };
+  // const updateOrderModal = (bool) => {
+  // setUpdateOrderModalShow(bool | false);
+  // };
 
   //selector!!!
   const updateOrderFormDisplay = (id) => {
@@ -202,17 +209,17 @@ const App = () => {
 
   const toggleUpdateOrderModalDisplay = updateOrderModalDisplay ? (
     <UpdateOrderModal
-      orderToUpdate={orderToUpdate}
-      //updateOrderModal={updateOrderModal}
-      // formSubmitted={formSubmitted}
+    //orderToUpdate={updateOrderDisplay}
+    //updateOrderModal={updateOrderModal}
+    // formSubmitted={formSubmitted}
     />
   ) : null;
 
-  const toggleDeleteConfirmModal = confirmDeleteModalShow ? (
+  const toggleDeleteConfirmModal = deleteOrderModalDisplay ? (
     <DeleteConfirmModal
-      orderConfirmDelete={orderConfirmDelete}
+      orderConfirmDelete={deleteOrderDisplay}
       orderStatusUpdate={orderStatusUpdate}
-      setConfirmDeleteModalShow={setConfirmDeleteModalShow}
+      // setConfirmDeleteModalShow={setConfirmDeleteModalShow}
     />
   ) : null;
 

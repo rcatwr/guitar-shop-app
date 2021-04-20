@@ -1,7 +1,11 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { toggleUpdateOrderModal } from "../redux/modalDisplaySlice";
+import {
+  toggleUpdateOrderModal,
+  toggleDeleteOrderModal,
+} from "../redux/modalDisplaySlice";
 import moment from "moment";
+import { updateOrder } from "../redux/orderSlice";
 
 const OrderCard = ({ order, orderStatusUpdate }) => {
   const {
@@ -23,7 +27,8 @@ const OrderCard = ({ order, orderStatusUpdate }) => {
   const dispatch = useDispatch();
 
   const handleClick = (e) => {
-    dispatch(toggleUpdateOrderModal());
+    if (e.target.id === "updateOrder") dispatch(toggleUpdateOrderModal(order));
+    if (e.target.id === "deleted") dispatch(toggleDeleteOrderModal(order));
     // send 'updateOrder' -- the id to the main App
     orderStatusUpdate(orderId, e.target.id);
   };

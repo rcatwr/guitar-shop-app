@@ -30,7 +30,7 @@ const Form = (props) => {
   const dispatch = useDispatch();
 
   const updateOrderModalDisplay = useSelector(
-    (state) => state.modals.updateOrderModalShow
+    (state) => state.modals.updateOrder.modalShow
   );
 
   const {
@@ -290,7 +290,7 @@ const Form = (props) => {
           <div className="field is-grouped">
             <div className="control">
               <button type="submit" className="button is-link">
-                {props.newOrderId ? "Submit" : "Update"}
+                {updateOrderModalDisplay ? "Update" : "Submit"}
               </button>
             </div>
             <div className="control">
@@ -299,10 +299,10 @@ const Form = (props) => {
                 onClick={(e) => {
                   //cancels and redirects!
                   e.preventDefault();
-                  if (order.new) {
-                    setRedirect(true);
-                  } else {
+                  if (updateOrderModalDisplay) {
                     dispatch(toggleUpdateOrderModal());
+                  } else {
+                    setRedirect(true);
                   }
                 }}
               >
