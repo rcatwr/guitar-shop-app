@@ -1,27 +1,27 @@
 import { createSlice } from "@reduxjs/toolkit";
 import ordersData from "../data/orders.json";
 
-// make a simple function to replace the repetition here!
-
 export const orderSlice = createSlice({
   name: "orders",
   initialState: ordersData,
   reducers: {
     createOrder: (state, action) => {
-      const order = action.payload.order;
+      const order = action.payload;
       state.push(order);
     },
     updateOrder: (state, action) => {
-      const order = action.payload.order;
+      const order = action.payload;
       const updatedOrder = state.find((item) => item.orderId === order.orderId);
+
       const index = state.indexOf(updatedOrder);
+      console.log(index, updatedOrder);
       state[index] = order;
     },
     deleteOrder: (state, action) => {
       const orderId = action.payload;
-      const deletedOrder = state.find((item) => item.orderId === orderId);
-      const index = state.indexOf(deletedOrder);
-      state.splice(index, 1);
+      const deleteOrder = state.find((item) => item.orderId === orderId);
+      const index = state.indexOf(deleteOrder);
+      state[index].deleted = true;
     },
     archiveOrder: (state, action) => {
       const orderId = action.payload;

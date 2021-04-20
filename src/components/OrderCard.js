@@ -27,8 +27,14 @@ const OrderCard = ({ order }) => {
   const dispatch = useDispatch();
 
   const handleClick = (e) => {
-    if (e.target.id === "updateOrder") dispatch(toggleUpdateOrderModal(order));
-    if (e.target.id === "deleted") dispatch(toggleDeleteOrderModal(order));
+    if (e.target.id === "updateOrder") {
+      dispatch(toggleUpdateOrderModal(order));
+      return;
+    }
+    if (e.target.id === "deleted") {
+      dispatch(toggleDeleteOrderModal(order));
+      return;
+    }
     if (e.target.id === "status" && completed) {
       dispatch(archiveOrder(orderId));
     } else {

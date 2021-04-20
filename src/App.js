@@ -33,6 +33,11 @@ const App = () => {
 
   //redux store
   const orders = useSelector((state) => state.orders);
+
+  const newOrderId = () => {
+    return Math.max(...orders.map((order) => order.orderId)) + 1;
+  };
+
   const updateOrderModalDisplay = useSelector(
     (state) => state.modals.updateOrder.modalShow
   );
@@ -113,16 +118,13 @@ const App = () => {
   // };
 
   //selector!!!
-  const updateOrderFormDisplay = (id) => {
-    // sorts through and finds the order we need to update in orders
-    setOrderToUpdate(orders.find((o) => o.orderId === id));
-    // pass this bit of state to props
-  };
+  // const updateOrderFormDisplay = (id) => {
+  // sorts through and finds the order we need to update in orders
+  //   setOrderToUpdate(orders.find((o) => o.orderId === id));
+  // pass this bit of state to props
+  // };
 
   // this gives us the order number for the next order
-  const newOrderId = () => {
-    return Math.max(...orders.map((order) => order.orderId)) + 1;
-  };
 
   const searchByText = (text) => {
     setSearchTerm(text.toLowerCase().trim());

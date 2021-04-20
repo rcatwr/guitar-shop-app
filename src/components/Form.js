@@ -24,13 +24,21 @@ const Form = (props) => {
     completed: false,
     archived: false,
     deleted: false,
-    new: true,
+    new: false,
   });
 
   const dispatch = useDispatch();
 
   const updateOrderModalDisplay = useSelector(
     (state) => state.modals.updateOrder.modalShow
+  );
+
+  const orderToUpdate = useSelector((state) => state.modals.updateOrder.order);
+
+  console.log("order: ", orderToUpdate);
+
+  const newOrderId = useSelector(
+    (state) => Math.max(...state.orders.map((order) => order.orderId)) + 1
   );
 
   const {
@@ -51,23 +59,37 @@ const Form = (props) => {
 
   useEffect(() => {
     console.log("running");
-    if (props.newOrderId) {
-      setOrder({ ...order, orderId: props.newOrderId() });
+    if (!updateOrderModalDisplay) {
+      setOrder({ ...order, orderId: newOrderId });
     }
 
-    if (props.orderToUpdate) {
-      setOrder(props.orderToUpdate);
+    if (orderToUpdate) {
+      setOrder(orderToUpdate);
 
-      //fix to get my mocked data to work with moment.js
-      if (typeof props.orderToUpdate.timeDroppedOff === "string") {
+      // fix to get my mocked data to work with moment.js
+      if (typeof orderToUpdate.timeDroppedOff === "string") {
         setOrder({
-          ...props.orderToUpdate,
+          ...orderToUpdate,
 
-          timeDroppedOff: new Date(props.orderToUpdate.timeDroppedOff),
+          timeDroppedOff: new Date(orderToUpdate.timeDroppedOff),
 
-          timeEstimatedPickup: new Date(
-            props.orderToUpdate.timeEstimatedPickup
-          ),
+          timeEstimatedPickup: new Date(orderToUpdate.timeEstimatedPickup),
+        });
+      }
+
+      // moment js will break without values!!
+
+      if (!orderToUpdate.timeDroppedOff) {
+        setOrder({
+          ...orderToUpdate,
+          timeDroppedOff: new Date(),
+        });
+      }
+
+      if (!orderToUpdate.timeEstimatedPickup) {
+        setOrder({
+          ...orderToUpdate,
+          timeEstimatedPickup: new Date(),
         });
       }
     }
@@ -89,13 +111,14 @@ const Form = (props) => {
     setOrder({ ...order, new: false });
 
     if (updateOrderModalDisplay) {
-      dispatch(updateOrder({ order }));
+      dispatch(updateOrder(order));
       //props.formSubmitted(order, true);
       // closes the modal
       // props.updateOrderModal(false);
+      // ** close modal **
       dispatch(toggleUpdateOrderModal());
     } else {
-      dispatch(createOrder({ order }));
+      dispatch(createOrder(order));
       // instead of callback, lets send to dispatch
       // props.formSubmitted(order, false);
       setRedirect(true);
