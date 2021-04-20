@@ -44,6 +44,8 @@ const App = () => {
   const deleteOrderModalDisplay = useSelector(
     (state) => state.modals.deleteOrder.modalShow
   );
+
+  // put this into the modal component instead of here
   const deleteOrderDisplay = useSelector(
     (state) => state.modals.deleteOrder.order
   );
