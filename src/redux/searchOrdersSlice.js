@@ -11,9 +11,21 @@ export const searchOrderSlice = createSlice({
     updateSearchTerm: (state, action) => {
       state.searchTerm = action.payload;
     },
+    sortCategory: (state, action) => {
+      state.sortBy = action.payload;
+    },
+    sortDirection: (state, action) => {
+      state.sortDir = action.payload;
+    },
   },
 });
 
-export const { updateSearchTerm } = searchOrderSlice.actions;
+export const {
+  updateSearchTerm,
+  sortCategory,
+  sortDirection,
+} = searchOrderSlice.actions;
 
 export default searchOrderSlice.reducer;
+
+// finish adding more reducers here!

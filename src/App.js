@@ -25,8 +25,8 @@ const App = () => {
   // const [updateOrderModalShow, setUpdateOrderModalShow] = useState(false);
   const [orderConfirmDelete, setOrderConfirmDelete] = useState({});
   const [orderToUpdate, setOrderToUpdate] = useState({});
-  const [sortBy, setSortBy] = useState("orderId");
-  const [sortDir, setSortDir] = useState("asc");
+  // const [sortBy, setSortBy] = useState("orderId");
+  // const [sortDir, setSortDir] = useState("asc");
   //const [searchTerm, setSearchTerm] = useState("");
   // need to get rid of this and use the redux store
   const [ordersLocalState, setOrders] = useState([]);
@@ -35,6 +35,10 @@ const App = () => {
   const orders = useSelector((state) => state.orders);
 
   const searchTerm = useSelector((state) => state.searchOrders.searchTerm);
+
+  const sortBy = useSelector((state) => state.searchOrders.sortBy);
+
+  const sortDir = useSelector((state) => state.searchOrders.sortDir);
 
   const newOrderId = () => {
     return Math.max(...orders.map((order) => order.orderId)) + 1;
@@ -134,13 +138,13 @@ const App = () => {
   //   setSearchTerm(text.toLowerCase().trim());
   // };
 
-  const sortCardOrder = (sortBy) => {
-    setSortBy(sortBy);
-  };
+  // const sortCardOrder = (sortBy) => {
+  // setSortBy(sortBy);
+  // };
 
-  const sortCardDir = (sortDir) => {
-    setSortDir(sortDir);
-  };
+  // const sortCardDir = (sortDir) => {
+  //setSortDir(sortDir);
+  // };
 
   const cardDisplayLogic = (o) => ({
     current: !o.deleted && !o.completed,
@@ -235,9 +239,9 @@ const App = () => {
         <BrowserRouter>
           <Nav orderStatus={countCardStatus(orders)} />
           <SearchTool
-            sortCardOrder={sortCardOrder}
-            sortCardDir={sortCardDir}
-            // searchByText={searchByText}
+          // sortCardOrder={sortCardOrder}
+          // sortCardDir={sortCardDir}
+          // searchByText={searchByText}
           />
 
           <Switch>

@@ -1,12 +1,16 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { sortCategory, sortDirection } from "../redux/searchOrdersSlice";
 import _ from "lodash";
 import "../css/Dropdown.css";
 import searchByItems from "../data/searchByItems.json";
 
-const Dropdown = ({ sortCardOrder, sortCardDir }) => {
+const Dropdown = () => {
   const [dropdownActive, setDropDownActive] = useState(false);
   const [dropdownItemActive, setDropdownItemActive] = useState("orderId");
   const [searchOrder, setSearchOrder] = useState("desc");
+
+  const dispatch = useDispatch();
 
   const clickHandler = (e) => {
     if (!dropdownActive) {
@@ -18,9 +22,9 @@ const Dropdown = ({ sortCardOrder, sortCardDir }) => {
 
   const updateCardSearch = (input) => {
     if (input === "asc" || input === "desc") {
-      sortCardDir(input);
+      dispatch(sortDirection(input));
     } else {
-      sortCardOrder(input);
+      dispatch(sortCategory(input));
     }
   };
 

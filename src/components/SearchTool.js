@@ -3,7 +3,7 @@ import SearchInput from "./SearchInput";
 import Dropdown from "./Dropdown";
 import { useLocation } from "react-router-dom";
 
-const SearchTool = ({ sortCardOrder, sortCardDir, searchByText }) => {
+const SearchTool = ({ sortCardDir, searchByText }) => {
   const usePathname = () => {
     const location = useLocation();
     return location.pathname;
@@ -17,7 +17,7 @@ const SearchTool = ({ sortCardOrder, sortCardDir, searchByText }) => {
         </div>
 
         <div className="control">
-          <Dropdown sortCardOrder={sortCardOrder} sortCardDir={sortCardDir} />
+          <Dropdown sortCardDir={sortCardDir} />
         </div>
       </div>
     </div>
