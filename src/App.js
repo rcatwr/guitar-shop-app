@@ -27,12 +27,14 @@ const App = () => {
   const [orderToUpdate, setOrderToUpdate] = useState({});
   const [sortBy, setSortBy] = useState("orderId");
   const [sortDir, setSortDir] = useState("asc");
-  const [searchTerm, setSearchTerm] = useState("");
+  //const [searchTerm, setSearchTerm] = useState("");
   // need to get rid of this and use the redux store
   const [ordersLocalState, setOrders] = useState([]);
 
   //redux store
   const orders = useSelector((state) => state.orders);
+
+  const searchTerm = useSelector((state) => state.searchOrders.searchTerm);
 
   const newOrderId = () => {
     return Math.max(...orders.map((order) => order.orderId)) + 1;
@@ -128,9 +130,9 @@ const App = () => {
 
   // this gives us the order number for the next order
 
-  const searchByText = (text) => {
-    setSearchTerm(text.toLowerCase().trim());
-  };
+  // const searchByText = (text) => {
+  //   setSearchTerm(text.toLowerCase().trim());
+  // };
 
   const sortCardOrder = (sortBy) => {
     setSortBy(sortBy);
@@ -235,7 +237,7 @@ const App = () => {
           <SearchTool
             sortCardOrder={sortCardOrder}
             sortCardDir={sortCardDir}
-            searchByText={searchByText}
+            // searchByText={searchByText}
           />
 
           <Switch>
