@@ -52,9 +52,9 @@ const App = () => {
   );
 
   // put this into the modal component instead of here
-  const deleteOrderDisplay = useSelector(
-    (state) => state.modals.deleteOrder.order
-  );
+  //const deleteOrderDisplay = useSelector(
+  // (state) => state.modals.deleteOrder.order
+  //);
 
   // make selectors here for all kindsa stuff
 
@@ -83,30 +83,30 @@ const App = () => {
   //   }
   // };
 
-  const orderStatusUpdate = (id, trigger) => {
-    // this handles the 'delete' button
-    //if (trigger === "deleted" && !confirmDeleteModalShow) {
-    // return openConfirmDeleteModal(id);
-    // }
-    // open the order update modal in App if update button is selected in orderCard
-    // passes trigger and order id
-    // this handles the update sequence
-    //if (trigger === "updateOrder") {
-    // updateOrderModal(true);
-    // updateOrderFormDisplay(id);
-    // use this for opening the order update modal
-    // }
-    // this map method goes throught the orders object in state
-    // uses a ternary operator
-    // does the id of the order match the order id of the order
-    // clicked on the interface?
-    // it's dynamic, so trigger could be 'completed','archived', 'deleted'
-    //const updatedOrders = orders.map((order) =>
-    // order.orderId === id ? { ...order, [trigger]: true } : order
-    // );
-    // setOrders(updatedOrders);
-    // setConfirmDeleteModalShow(false);
-  };
+  // const orderStatusUpdate = (id, trigger) => {
+  // this handles the 'delete' button
+  //if (trigger === "deleted" && !confirmDeleteModalShow) {
+  // return openConfirmDeleteModal(id);
+  // }
+  // open the order update modal in App if update button is selected in orderCard
+  // passes trigger and order id
+  // this handles the update sequence
+  //if (trigger === "updateOrder") {
+  // updateOrderModal(true);
+  // updateOrderFormDisplay(id);
+  // use this for opening the order update modal
+  // }
+  // this map method goes throught the orders object in state
+  // uses a ternary operator
+  // does the id of the order match the order id of the order
+  // clicked on the interface?
+  // it's dynamic, so trigger could be 'completed','archived', 'deleted'
+  //const updatedOrders = orders.map((order) =>
+  // order.orderId === id ? { ...order, [trigger]: true } : order
+  // );
+  // setOrders(updatedOrders);
+  // setConfirmDeleteModalShow(false);
+  // };
 
   // this method grabs the order from state to
   // display on the modal and prepare the
@@ -223,9 +223,9 @@ const App = () => {
 
   const toggleDeleteConfirmModal = deleteOrderModalDisplay ? (
     <DeleteConfirmModal
-      orderConfirmDelete={deleteOrderDisplay}
-      orderStatusUpdate={orderStatusUpdate}
-      // setConfirmDeleteModalShow={setConfirmDeleteModalShow}
+    // orderConfirmDelete={deleteOrderDisplay}
+    // orderStatusUpdate={orderStatusUpdate}
+    // setConfirmDeleteModalShow={setConfirmDeleteModalShow}
     />
   ) : null;
 
