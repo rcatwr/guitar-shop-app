@@ -112,15 +112,12 @@ const Form = (props) => {
 
     if (updateOrderModalDisplay) {
       dispatch(updateOrder(order));
-      //props.formSubmitted(order, true);
-      // closes the modal
-      // props.updateOrderModal(false);
+
       // ** close modal **
       dispatch(toggleUpdateOrderModal());
     } else {
       dispatch(createOrder(order));
-      // instead of callback, lets send to dispatch
-      // props.formSubmitted(order, false);
+
       setRedirect(true);
     }
   };
