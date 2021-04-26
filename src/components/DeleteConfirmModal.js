@@ -8,7 +8,6 @@ const DeleteConfirmModal = () => {
   const dispatch = useDispatch();
   return (
     <Modal>
-      {/* put the notification into its own component -- and get it out of the main app */}
       <div className="notification">
         <button
           className="delete"
